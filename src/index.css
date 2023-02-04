@@ -1,0 +1,42 @@
+@import url("https://fonts.googleapis.com/css2?family=Athiti:wght@200&family=Noto+Sans+Thai:wght@100;200;300;400;500;600;700;800;900&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+  /* .li {
+    @apply hover:bg-secondary w-60 p-3 rounded-lg text-lg;
+  }
+  .liactive {
+    @apply bg-secondary w-60 p-3 rounded-lg text-lg;
+  } */
+  .titlebar {
+    -webkit-user-select: none;
+    -webkit-app-region: drag;
+  }
+  .bar-button {
+    -webkit-app-region: no-drag;
+    @apply px-4;
+  }
+  .calculator {
+    @apply w-16 h-16 flex justify-center items-center text-4xl  text-center rounded-full  outline hover:bg-white hover:text-primary active:bg-secondary;
+  }
+  .main {
+    height: 100vh;
+    overflow-y: hidden; /* Hide vertical scrollbar */
+    overflow-x: hidden; /* Hide horizontal scrollbar */
+  }
+}
+@layer base {
+  html {
+    font-family: Noto Sans Thai;
+  }
+  body {
+    height: 100vh;
+    margin: 0;
+    padding: 0;
+    overflow-y: hidden; /* Hide vertical scrollbar */
+    overflow-x: hidden; /* Hide horizontal scrollbar */
+  }
+}

@@ -1,0 +1,22 @@
+generator client {
+  provider      = "prisma-client-js"
+  output        = "../assets/database/client"
+  binaryTargets = ["native"]
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+model ID {
+  ID   Int    @id @default(autoincrement())
+  Name String
+  PIN  Int
+}
+
+model user {
+  ID   Int    @id @default(autoincrement())
+  Name String
+  PIN  Int
+}
