@@ -1,5 +1,7 @@
 const { app, BrowserWindow, ipcMain } = require("electron");
 const path = require("path");
+const axios = require("axios");
+const { log } = require("console");
 const isDev = !app.isPackaged;
 const RESOURCES_PATH = app.isPackaged
   ? path.join(process.resourcesPath)
@@ -16,17 +18,7 @@ const knex = require("knex")({
   },
   useNullAsDefault: true,
 });
-async function testdata() {
-  try {
-    // const data = await knex("User").select("*");
-    // console.log(data);
-    const data2 = await prisma.user.findMany();
-    console.log(data2);
-  } catch (error) {
-    console.log(error.message);
-  }
-}
-testdata();
+
 function createWindow() {
   // Browser Window <- Renderer Process
   const win = new BrowserWindow({
@@ -65,5 +57,62 @@ app.on("activate", () => {
 ipcMain.handle("test", async (event, someArgument) => {
   const data2 = await prisma.user.findMany();
   console.log(data2);
-  return data2;
+  let product;
+  const url = "https://khwanta-back-zfn2h52c7a-as.a.run.app";
+  axios
+    .get(`${url}/getPosProduct`)
+    .then((e) => {
+      // console.log(e.data);
+      product = e.data;
+      console.log(product);
+      return e.data;
+    })
+    .catch(function (error) {
+      res.status(400).json({ error: error.message });
+      console.log(error);
+    });
+  // const res = await axios.get(`${url}/getPosProduct`);
+  // console.log(res.JSON.stringify());
+  // return res;
+});
+ipcMain.on("test", async (event, someArgument) => {
+  const data2 = await prisma.user.findMany();
+  console.log(data2);
+  let product;
+  const url = "https://khwanta-back-zfn2h52c7a-as.a.run.app";
+  axios
+    .get(`${url}/getPosProduct`)
+    .then((e) => {
+      // console.log(e.data);
+      product = e.data;
+      console.log(product);
+      event.reply("test", e.data);
+      // return e.data;
+    })
+    .catch(function (error) {
+      res.status(400).json({ error: error.message });
+      console.log(error);
+    });
+  // axios.get("http://localhost:8080/getdata").then(async (e) => {
+  //   event.reply("getdata", e.data);
+  // });
+  // const res = await axios.get(`${url}/getPosProduct`);
+  // console.log(res.JSON.stringify());
+  // return res;
+});
+ipcMain.on("getProduct", async (event, someArgument) => {
+  console.log(1);
+  const url = "https://khwanta-back-zfn2h52c7a-as.a.run.app";
+  axios
+    .get(`${url}/getPosProduct`)
+    .then((e) => {
+      // console.log(e.data);
+      product = e.data;
+      event.reply("getProduct", e.data);
+      // return e.data;
+    })
+    .catch(function (error) {
+      res.status(400).json({ error: error.message });
+      console.log(error);
+    });
 });

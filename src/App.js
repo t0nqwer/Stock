@@ -6,21 +6,31 @@ import "./App.css";
 import { Navbar, Footer, Sidebar, ThemeSettings } from "./components";
 import { Product, Stock, Import, Export, Dashboard } from "./pages";
 import { useAppContext } from "./contexts/AppContext";
+import { useDataContext } from "./contexts/DataContext";
+import { testinvoke } from "./hook/fetch";
 const app = () => {
-  const testinvoke = async () => {
-    const data = await bridge.test.invoke("test", data);
-    console.log(data);
-  };
-
   const { activeMenu, currentColor } = useAppContext();
-
+  const { ProductData, setProductData } = useDataContext();
   useEffect(() => {
-    testinvoke();
-    return () => {
-      second;
-    };
+    bridge.FindProduct.send("getProduct");
   }, []);
+  bridge.FindProduct.once("getProduct", (arg) => {
+    console.log(1);
+    console.log(arg);
+  });
+  let buffer = ""; // buffer for constructing the barcode from key presses
 
+  window.addEventListener("keypress", (event) => {
+    let data = buffer || "";
+    if (event.key !== "Enter") {
+      // barcode ends with enter -key
+      data += event.key;
+      buffer = data;
+    } else {
+      buffer = "";
+      console.log(data);
+    }
+  });
   return (
     <div>
       <HashRouter>

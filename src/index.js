@@ -4,6 +4,7 @@ import App from "./App";
 import "./index.css";
 import { registerLicense } from "@syncfusion/ej2-base";
 import { AppContextProvider } from "./contexts/AppContext";
+import { DataContextProvider } from "./contexts/DataContext";
 import { PrismaClient } from "./database/generated/client";
 
 registerLicense(
@@ -13,6 +14,8 @@ const container = document.getElementById("electron");
 const root = createRoot(container);
 root.render(
   <AppContextProvider>
-    <App />
+    <DataContextProvider>
+      <App />
+    </DataContextProvider>
   </AppContextProvider>
 );

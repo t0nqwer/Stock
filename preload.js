@@ -1,27 +1,31 @@
 const { ipcRenderer, contextBridge } = require("electron");
 
 contextBridge.exposeInMainWorld("bridge", {
-  test: {
-    invoke(channel) {
-      console.log(channel);
-    //   ipcRenderer.invoke(channel, someArgument).then((result) => {
-    //     // ...
-    //   });
-      return ipcRenderer.invoke(channel);
+  invoke(channel) {
+    console.log(channel);
+    return ipcRenderer.invoke(channel);
+  },
+
+  receive: (channel, func) => {
+    let validChannels = ["test"];
+    if (validChannels.includes(channel)) {
+      return ipcRenderer.on("test", (event, ...args) => func(...args));
+    }
+  },
+  FindProduct: {
+    send(channel, data) {
+      ipcRenderer.send("getProduct");
     },
     once(channel, func) {
-      const validChannels = ["getCOMPORT"];
-      ipcRenderer.removeAllListeners("getCOMPORT");
+      const validChannels = ["getProduct"];
+      ipcRenderer.removeAllListeners("getProduct");
       if (validChannels.includes(channel)) {
-        return ipcRenderer.on(channel, (event, ...test) => func(...test));
+        console.log(ipcRenderer.listenerCount("getProduct"));
+        console.log(ipcRenderer.listenerCount("test"));
+
+        ipcRenderer.on(channel, (event, test) => func(test));
       }
     },
-  },
-  receive: (channel, func) => {
-    let validChannels = ["ScanData"];
-    if (validChannels.includes(channel)) {
-      return ipcRenderer.once("ScanData", (event, ...args) => func(...args));
-    }
   },
   remove: (channel) => {
     console.log(ipcRenderer.listenerCount("scanbarcode"));
