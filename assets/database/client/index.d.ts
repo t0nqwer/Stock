@@ -32,6 +32,25 @@ export type user = {
   PIN: number
 }
 
+/**
+ * Model productdata
+ * 
+ */
+export type productdata = {
+  product_barcode: bigint
+  product_id: number
+  tiltle: string
+  code: string
+  fabric_name: string | null
+  front_img: string
+  back_img: string
+  price: number
+  outside_brand: string | null
+  description: string | null
+  category: string | null
+  size: string | null
+}
+
 
 /**
  * ##  Prisma Client ʲˢ
@@ -169,6 +188,16 @@ export class PrismaClient<
     * ```
     */
   get user(): Prisma.userDelegate<GlobalReject>;
+
+  /**
+   * `prisma.productdata`: Exposes CRUD operations for the **productdata** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Productdata
+    * const productdata = await prisma.productdata.findMany()
+    * ```
+    */
+  get productdata(): Prisma.productdataDelegate<GlobalReject>;
 }
 
 export namespace Prisma {
@@ -646,7 +675,8 @@ export namespace Prisma {
 
   export const ModelName: {
     ID: 'ID',
-    user: 'user'
+    user: 'user',
+    productdata: 'productdata'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -2573,6 +2603,960 @@ export namespace Prisma {
 
 
   /**
+   * Model productdata
+   */
+
+
+  export type AggregateProductdata = {
+    _count: ProductdataCountAggregateOutputType | null
+    _avg: ProductdataAvgAggregateOutputType | null
+    _sum: ProductdataSumAggregateOutputType | null
+    _min: ProductdataMinAggregateOutputType | null
+    _max: ProductdataMaxAggregateOutputType | null
+  }
+
+  export type ProductdataAvgAggregateOutputType = {
+    product_barcode: number | null
+    product_id: number | null
+    price: number | null
+  }
+
+  export type ProductdataSumAggregateOutputType = {
+    product_barcode: bigint | null
+    product_id: number | null
+    price: number | null
+  }
+
+  export type ProductdataMinAggregateOutputType = {
+    product_barcode: bigint | null
+    product_id: number | null
+    tiltle: string | null
+    code: string | null
+    fabric_name: string | null
+    front_img: string | null
+    back_img: string | null
+    price: number | null
+    outside_brand: string | null
+    description: string | null
+    category: string | null
+    size: string | null
+  }
+
+  export type ProductdataMaxAggregateOutputType = {
+    product_barcode: bigint | null
+    product_id: number | null
+    tiltle: string | null
+    code: string | null
+    fabric_name: string | null
+    front_img: string | null
+    back_img: string | null
+    price: number | null
+    outside_brand: string | null
+    description: string | null
+    category: string | null
+    size: string | null
+  }
+
+  export type ProductdataCountAggregateOutputType = {
+    product_barcode: number
+    product_id: number
+    tiltle: number
+    code: number
+    fabric_name: number
+    front_img: number
+    back_img: number
+    price: number
+    outside_brand: number
+    description: number
+    category: number
+    size: number
+    _all: number
+  }
+
+
+  export type ProductdataAvgAggregateInputType = {
+    product_barcode?: true
+    product_id?: true
+    price?: true
+  }
+
+  export type ProductdataSumAggregateInputType = {
+    product_barcode?: true
+    product_id?: true
+    price?: true
+  }
+
+  export type ProductdataMinAggregateInputType = {
+    product_barcode?: true
+    product_id?: true
+    tiltle?: true
+    code?: true
+    fabric_name?: true
+    front_img?: true
+    back_img?: true
+    price?: true
+    outside_brand?: true
+    description?: true
+    category?: true
+    size?: true
+  }
+
+  export type ProductdataMaxAggregateInputType = {
+    product_barcode?: true
+    product_id?: true
+    tiltle?: true
+    code?: true
+    fabric_name?: true
+    front_img?: true
+    back_img?: true
+    price?: true
+    outside_brand?: true
+    description?: true
+    category?: true
+    size?: true
+  }
+
+  export type ProductdataCountAggregateInputType = {
+    product_barcode?: true
+    product_id?: true
+    tiltle?: true
+    code?: true
+    fabric_name?: true
+    front_img?: true
+    back_img?: true
+    price?: true
+    outside_brand?: true
+    description?: true
+    category?: true
+    size?: true
+    _all?: true
+  }
+
+  export type ProductdataAggregateArgs = {
+    /**
+     * Filter which productdata to aggregate.
+     */
+    where?: productdataWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of productdata to fetch.
+     */
+    orderBy?: Enumerable<productdataOrderByWithRelationInput>
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: productdataWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` productdata from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` productdata.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned productdata
+    **/
+    _count?: true | ProductdataCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: ProductdataAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: ProductdataSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: ProductdataMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: ProductdataMaxAggregateInputType
+  }
+
+  export type GetProductdataAggregateType<T extends ProductdataAggregateArgs> = {
+        [P in keyof T & keyof AggregateProductdata]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateProductdata[P]>
+      : GetScalarType<T[P], AggregateProductdata[P]>
+  }
+
+
+
+
+  export type ProductdataGroupByArgs = {
+    where?: productdataWhereInput
+    orderBy?: Enumerable<productdataOrderByWithAggregationInput>
+    by: ProductdataScalarFieldEnum[]
+    having?: productdataScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: ProductdataCountAggregateInputType | true
+    _avg?: ProductdataAvgAggregateInputType
+    _sum?: ProductdataSumAggregateInputType
+    _min?: ProductdataMinAggregateInputType
+    _max?: ProductdataMaxAggregateInputType
+  }
+
+
+  export type ProductdataGroupByOutputType = {
+    product_barcode: bigint
+    product_id: number
+    tiltle: string
+    code: string
+    fabric_name: string | null
+    front_img: string
+    back_img: string
+    price: number
+    outside_brand: string | null
+    description: string | null
+    category: string | null
+    size: string | null
+    _count: ProductdataCountAggregateOutputType | null
+    _avg: ProductdataAvgAggregateOutputType | null
+    _sum: ProductdataSumAggregateOutputType | null
+    _min: ProductdataMinAggregateOutputType | null
+    _max: ProductdataMaxAggregateOutputType | null
+  }
+
+  type GetProductdataGroupByPayload<T extends ProductdataGroupByArgs> = PrismaPromise<
+    Array<
+      PickArray<ProductdataGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof ProductdataGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], ProductdataGroupByOutputType[P]>
+            : GetScalarType<T[P], ProductdataGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type productdataSelect = {
+    product_barcode?: boolean
+    product_id?: boolean
+    tiltle?: boolean
+    code?: boolean
+    fabric_name?: boolean
+    front_img?: boolean
+    back_img?: boolean
+    price?: boolean
+    outside_brand?: boolean
+    description?: boolean
+    category?: boolean
+    size?: boolean
+  }
+
+
+  export type productdataGetPayload<S extends boolean | null | undefined | productdataArgs> =
+    S extends { select: any, include: any } ? 'Please either choose `select` or `include`' :
+    S extends true ? productdata :
+    S extends undefined ? never :
+    S extends { include: any } & (productdataArgs | productdataFindManyArgs)
+    ? productdata 
+    : S extends { select: any } & (productdataArgs | productdataFindManyArgs)
+      ? {
+    [P in TruthyKeys<S['select']>]:
+    P extends keyof productdata ? productdata[P] : never
+  } 
+      : productdata
+
+
+  type productdataCountArgs = 
+    Omit<productdataFindManyArgs, 'select' | 'include'> & {
+      select?: ProductdataCountAggregateInputType | true
+    }
+
+  export interface productdataDelegate<GlobalRejectSettings extends Prisma.RejectOnNotFound | Prisma.RejectPerOperation | false | undefined> {
+
+    /**
+     * Find zero or one Productdata that matches the filter.
+     * @param {productdataFindUniqueArgs} args - Arguments to find a Productdata
+     * @example
+     * // Get one Productdata
+     * const productdata = await prisma.productdata.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+    **/
+    findUnique<T extends productdataFindUniqueArgs,  LocalRejectSettings = T["rejectOnNotFound"] extends RejectOnNotFound ? T['rejectOnNotFound'] : undefined>(
+      args: SelectSubset<T, productdataFindUniqueArgs>
+    ): HasReject<GlobalRejectSettings, LocalRejectSettings, 'findUnique', 'productdata'> extends True ? Prisma__productdataClient<productdataGetPayload<T>> : Prisma__productdataClient<productdataGetPayload<T> | null, null>
+
+    /**
+     * Find one Productdata that matches the filter or throw an error  with `error.code='P2025'` 
+     *     if no matches were found.
+     * @param {productdataFindUniqueOrThrowArgs} args - Arguments to find a Productdata
+     * @example
+     * // Get one Productdata
+     * const productdata = await prisma.productdata.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+    **/
+    findUniqueOrThrow<T extends productdataFindUniqueOrThrowArgs>(
+      args?: SelectSubset<T, productdataFindUniqueOrThrowArgs>
+    ): Prisma__productdataClient<productdataGetPayload<T>>
+
+    /**
+     * Find the first Productdata that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {productdataFindFirstArgs} args - Arguments to find a Productdata
+     * @example
+     * // Get one Productdata
+     * const productdata = await prisma.productdata.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+    **/
+    findFirst<T extends productdataFindFirstArgs,  LocalRejectSettings = T["rejectOnNotFound"] extends RejectOnNotFound ? T['rejectOnNotFound'] : undefined>(
+      args?: SelectSubset<T, productdataFindFirstArgs>
+    ): HasReject<GlobalRejectSettings, LocalRejectSettings, 'findFirst', 'productdata'> extends True ? Prisma__productdataClient<productdataGetPayload<T>> : Prisma__productdataClient<productdataGetPayload<T> | null, null>
+
+    /**
+     * Find the first Productdata that matches the filter or
+     * throw `NotFoundError` if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {productdataFindFirstOrThrowArgs} args - Arguments to find a Productdata
+     * @example
+     * // Get one Productdata
+     * const productdata = await prisma.productdata.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+    **/
+    findFirstOrThrow<T extends productdataFindFirstOrThrowArgs>(
+      args?: SelectSubset<T, productdataFindFirstOrThrowArgs>
+    ): Prisma__productdataClient<productdataGetPayload<T>>
+
+    /**
+     * Find zero or more Productdata that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {productdataFindManyArgs=} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Productdata
+     * const productdata = await prisma.productdata.findMany()
+     * 
+     * // Get first 10 Productdata
+     * const productdata = await prisma.productdata.findMany({ take: 10 })
+     * 
+     * // Only select the `product_barcode`
+     * const productdataWithProduct_barcodeOnly = await prisma.productdata.findMany({ select: { product_barcode: true } })
+     * 
+    **/
+    findMany<T extends productdataFindManyArgs>(
+      args?: SelectSubset<T, productdataFindManyArgs>
+    ): PrismaPromise<Array<productdataGetPayload<T>>>
+
+    /**
+     * Create a Productdata.
+     * @param {productdataCreateArgs} args - Arguments to create a Productdata.
+     * @example
+     * // Create one Productdata
+     * const Productdata = await prisma.productdata.create({
+     *   data: {
+     *     // ... data to create a Productdata
+     *   }
+     * })
+     * 
+    **/
+    create<T extends productdataCreateArgs>(
+      args: SelectSubset<T, productdataCreateArgs>
+    ): Prisma__productdataClient<productdataGetPayload<T>>
+
+    /**
+     * Delete a Productdata.
+     * @param {productdataDeleteArgs} args - Arguments to delete one Productdata.
+     * @example
+     * // Delete one Productdata
+     * const Productdata = await prisma.productdata.delete({
+     *   where: {
+     *     // ... filter to delete one Productdata
+     *   }
+     * })
+     * 
+    **/
+    delete<T extends productdataDeleteArgs>(
+      args: SelectSubset<T, productdataDeleteArgs>
+    ): Prisma__productdataClient<productdataGetPayload<T>>
+
+    /**
+     * Update one Productdata.
+     * @param {productdataUpdateArgs} args - Arguments to update one Productdata.
+     * @example
+     * // Update one Productdata
+     * const productdata = await prisma.productdata.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+    **/
+    update<T extends productdataUpdateArgs>(
+      args: SelectSubset<T, productdataUpdateArgs>
+    ): Prisma__productdataClient<productdataGetPayload<T>>
+
+    /**
+     * Delete zero or more Productdata.
+     * @param {productdataDeleteManyArgs} args - Arguments to filter Productdata to delete.
+     * @example
+     * // Delete a few Productdata
+     * const { count } = await prisma.productdata.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+    **/
+    deleteMany<T extends productdataDeleteManyArgs>(
+      args?: SelectSubset<T, productdataDeleteManyArgs>
+    ): PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Productdata.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {productdataUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Productdata
+     * const productdata = await prisma.productdata.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+    **/
+    updateMany<T extends productdataUpdateManyArgs>(
+      args: SelectSubset<T, productdataUpdateManyArgs>
+    ): PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one Productdata.
+     * @param {productdataUpsertArgs} args - Arguments to update or create a Productdata.
+     * @example
+     * // Update or create a Productdata
+     * const productdata = await prisma.productdata.upsert({
+     *   create: {
+     *     // ... data to create a Productdata
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Productdata we want to update
+     *   }
+     * })
+    **/
+    upsert<T extends productdataUpsertArgs>(
+      args: SelectSubset<T, productdataUpsertArgs>
+    ): Prisma__productdataClient<productdataGetPayload<T>>
+
+    /**
+     * Count the number of Productdata.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {productdataCountArgs} args - Arguments to filter Productdata to count.
+     * @example
+     * // Count the number of Productdata
+     * const count = await prisma.productdata.count({
+     *   where: {
+     *     // ... the filter for the Productdata we want to count
+     *   }
+     * })
+    **/
+    count<T extends productdataCountArgs>(
+      args?: Subset<T, productdataCountArgs>,
+    ): PrismaPromise<
+      T extends _Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], ProductdataCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Productdata.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ProductdataAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends ProductdataAggregateArgs>(args: Subset<T, ProductdataAggregateArgs>): PrismaPromise<GetProductdataAggregateType<T>>
+
+    /**
+     * Group by Productdata.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ProductdataGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends ProductdataGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: ProductdataGroupByArgs['orderBy'] }
+        : { orderBy?: ProductdataGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends TupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, ProductdataGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetProductdataGroupByPayload<T> : PrismaPromise<InputErrors>
+
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for productdata.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export class Prisma__productdataClient<T, Null = never> implements PrismaPromise<T> {
+    [prisma]: true;
+    private readonly _dmmf;
+    private readonly _fetcher;
+    private readonly _queryType;
+    private readonly _rootField;
+    private readonly _clientMethod;
+    private readonly _args;
+    private readonly _dataPath;
+    private readonly _errorFormat;
+    private readonly _measurePerformance?;
+    private _isList;
+    private _callsite;
+    private _requestPromise?;
+    constructor(_dmmf: runtime.DMMFClass, _fetcher: PrismaClientFetcher, _queryType: 'query' | 'mutation', _rootField: string, _clientMethod: string, _args: any, _dataPath: string[], _errorFormat: ErrorFormat, _measurePerformance?: boolean | undefined, _isList?: boolean);
+    readonly [Symbol.toStringTag]: 'PrismaClientPromise';
+
+
+    private get _document();
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): Promise<TResult1 | TResult2>;
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): Promise<T | TResult>;
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): Promise<T>;
+  }
+
+
+
+  // Custom InputTypes
+
+  /**
+   * productdata base type for findUnique actions
+   */
+  export type productdataFindUniqueArgsBase = {
+    /**
+     * Select specific fields to fetch from the productdata
+     */
+    select?: productdataSelect | null
+    /**
+     * Filter, which productdata to fetch.
+     */
+    where: productdataWhereUniqueInput
+  }
+
+  /**
+   * productdata findUnique
+   */
+  export interface productdataFindUniqueArgs extends productdataFindUniqueArgsBase {
+   /**
+    * Throw an Error if query returns no results
+    * @deprecated since 4.0.0: use `findUniqueOrThrow` method instead
+    */
+    rejectOnNotFound?: RejectOnNotFound
+  }
+      
+
+  /**
+   * productdata findUniqueOrThrow
+   */
+  export type productdataFindUniqueOrThrowArgs = {
+    /**
+     * Select specific fields to fetch from the productdata
+     */
+    select?: productdataSelect | null
+    /**
+     * Filter, which productdata to fetch.
+     */
+    where: productdataWhereUniqueInput
+  }
+
+
+  /**
+   * productdata base type for findFirst actions
+   */
+  export type productdataFindFirstArgsBase = {
+    /**
+     * Select specific fields to fetch from the productdata
+     */
+    select?: productdataSelect | null
+    /**
+     * Filter, which productdata to fetch.
+     */
+    where?: productdataWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of productdata to fetch.
+     */
+    orderBy?: Enumerable<productdataOrderByWithRelationInput>
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for productdata.
+     */
+    cursor?: productdataWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` productdata from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` productdata.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of productdata.
+     */
+    distinct?: Enumerable<ProductdataScalarFieldEnum>
+  }
+
+  /**
+   * productdata findFirst
+   */
+  export interface productdataFindFirstArgs extends productdataFindFirstArgsBase {
+   /**
+    * Throw an Error if query returns no results
+    * @deprecated since 4.0.0: use `findFirstOrThrow` method instead
+    */
+    rejectOnNotFound?: RejectOnNotFound
+  }
+      
+
+  /**
+   * productdata findFirstOrThrow
+   */
+  export type productdataFindFirstOrThrowArgs = {
+    /**
+     * Select specific fields to fetch from the productdata
+     */
+    select?: productdataSelect | null
+    /**
+     * Filter, which productdata to fetch.
+     */
+    where?: productdataWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of productdata to fetch.
+     */
+    orderBy?: Enumerable<productdataOrderByWithRelationInput>
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for productdata.
+     */
+    cursor?: productdataWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` productdata from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` productdata.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of productdata.
+     */
+    distinct?: Enumerable<ProductdataScalarFieldEnum>
+  }
+
+
+  /**
+   * productdata findMany
+   */
+  export type productdataFindManyArgs = {
+    /**
+     * Select specific fields to fetch from the productdata
+     */
+    select?: productdataSelect | null
+    /**
+     * Filter, which productdata to fetch.
+     */
+    where?: productdataWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of productdata to fetch.
+     */
+    orderBy?: Enumerable<productdataOrderByWithRelationInput>
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing productdata.
+     */
+    cursor?: productdataWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` productdata from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` productdata.
+     */
+    skip?: number
+    distinct?: Enumerable<ProductdataScalarFieldEnum>
+  }
+
+
+  /**
+   * productdata create
+   */
+  export type productdataCreateArgs = {
+    /**
+     * Select specific fields to fetch from the productdata
+     */
+    select?: productdataSelect | null
+    /**
+     * The data needed to create a productdata.
+     */
+    data: XOR<productdataCreateInput, productdataUncheckedCreateInput>
+  }
+
+
+  /**
+   * productdata update
+   */
+  export type productdataUpdateArgs = {
+    /**
+     * Select specific fields to fetch from the productdata
+     */
+    select?: productdataSelect | null
+    /**
+     * The data needed to update a productdata.
+     */
+    data: XOR<productdataUpdateInput, productdataUncheckedUpdateInput>
+    /**
+     * Choose, which productdata to update.
+     */
+    where: productdataWhereUniqueInput
+  }
+
+
+  /**
+   * productdata updateMany
+   */
+  export type productdataUpdateManyArgs = {
+    /**
+     * The data used to update productdata.
+     */
+    data: XOR<productdataUpdateManyMutationInput, productdataUncheckedUpdateManyInput>
+    /**
+     * Filter which productdata to update
+     */
+    where?: productdataWhereInput
+  }
+
+
+  /**
+   * productdata upsert
+   */
+  export type productdataUpsertArgs = {
+    /**
+     * Select specific fields to fetch from the productdata
+     */
+    select?: productdataSelect | null
+    /**
+     * The filter to search for the productdata to update in case it exists.
+     */
+    where: productdataWhereUniqueInput
+    /**
+     * In case the productdata found by the `where` argument doesn't exist, create a new productdata with this data.
+     */
+    create: XOR<productdataCreateInput, productdataUncheckedCreateInput>
+    /**
+     * In case the productdata was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<productdataUpdateInput, productdataUncheckedUpdateInput>
+  }
+
+
+  /**
+   * productdata delete
+   */
+  export type productdataDeleteArgs = {
+    /**
+     * Select specific fields to fetch from the productdata
+     */
+    select?: productdataSelect | null
+    /**
+     * Filter which productdata to delete.
+     */
+    where: productdataWhereUniqueInput
+  }
+
+
+  /**
+   * productdata deleteMany
+   */
+  export type productdataDeleteManyArgs = {
+    /**
+     * Filter which productdata to delete
+     */
+    where?: productdataWhereInput
+  }
+
+
+  /**
+   * productdata without action
+   */
+  export type productdataArgs = {
+    /**
+     * Select specific fields to fetch from the productdata
+     */
+    select?: productdataSelect | null
+  }
+
+
+
+  /**
    * Enums
    */
 
@@ -2586,6 +3570,24 @@ export namespace Prisma {
   };
 
   export type IDScalarFieldEnum = (typeof IDScalarFieldEnum)[keyof typeof IDScalarFieldEnum]
+
+
+  export const ProductdataScalarFieldEnum: {
+    product_barcode: 'product_barcode',
+    product_id: 'product_id',
+    tiltle: 'tiltle',
+    code: 'code',
+    fabric_name: 'fabric_name',
+    front_img: 'front_img',
+    back_img: 'back_img',
+    price: 'price',
+    outside_brand: 'outside_brand',
+    description: 'description',
+    category: 'category',
+    size: 'size'
+  };
+
+  export type ProductdataScalarFieldEnum = (typeof ProductdataScalarFieldEnum)[keyof typeof ProductdataScalarFieldEnum]
 
 
   export const SortOrder: {
@@ -2695,6 +3697,81 @@ export namespace Prisma {
     PIN?: IntWithAggregatesFilter | number
   }
 
+  export type productdataWhereInput = {
+    AND?: Enumerable<productdataWhereInput>
+    OR?: Enumerable<productdataWhereInput>
+    NOT?: Enumerable<productdataWhereInput>
+    product_barcode?: BigIntFilter | bigint | number
+    product_id?: IntFilter | number
+    tiltle?: StringFilter | string
+    code?: StringFilter | string
+    fabric_name?: StringNullableFilter | string | null
+    front_img?: StringFilter | string
+    back_img?: StringFilter | string
+    price?: IntFilter | number
+    outside_brand?: StringNullableFilter | string | null
+    description?: StringNullableFilter | string | null
+    category?: StringNullableFilter | string | null
+    size?: StringNullableFilter | string | null
+  }
+
+  export type productdataOrderByWithRelationInput = {
+    product_barcode?: SortOrder
+    product_id?: SortOrder
+    tiltle?: SortOrder
+    code?: SortOrder
+    fabric_name?: SortOrder
+    front_img?: SortOrder
+    back_img?: SortOrder
+    price?: SortOrder
+    outside_brand?: SortOrder
+    description?: SortOrder
+    category?: SortOrder
+    size?: SortOrder
+  }
+
+  export type productdataWhereUniqueInput = {
+    product_barcode?: bigint | number
+  }
+
+  export type productdataOrderByWithAggregationInput = {
+    product_barcode?: SortOrder
+    product_id?: SortOrder
+    tiltle?: SortOrder
+    code?: SortOrder
+    fabric_name?: SortOrder
+    front_img?: SortOrder
+    back_img?: SortOrder
+    price?: SortOrder
+    outside_brand?: SortOrder
+    description?: SortOrder
+    category?: SortOrder
+    size?: SortOrder
+    _count?: productdataCountOrderByAggregateInput
+    _avg?: productdataAvgOrderByAggregateInput
+    _max?: productdataMaxOrderByAggregateInput
+    _min?: productdataMinOrderByAggregateInput
+    _sum?: productdataSumOrderByAggregateInput
+  }
+
+  export type productdataScalarWhereWithAggregatesInput = {
+    AND?: Enumerable<productdataScalarWhereWithAggregatesInput>
+    OR?: Enumerable<productdataScalarWhereWithAggregatesInput>
+    NOT?: Enumerable<productdataScalarWhereWithAggregatesInput>
+    product_barcode?: BigIntWithAggregatesFilter | bigint | number
+    product_id?: IntWithAggregatesFilter | number
+    tiltle?: StringWithAggregatesFilter | string
+    code?: StringWithAggregatesFilter | string
+    fabric_name?: StringNullableWithAggregatesFilter | string | null
+    front_img?: StringWithAggregatesFilter | string
+    back_img?: StringWithAggregatesFilter | string
+    price?: IntWithAggregatesFilter | number
+    outside_brand?: StringNullableWithAggregatesFilter | string | null
+    description?: StringNullableWithAggregatesFilter | string | null
+    category?: StringNullableWithAggregatesFilter | string | null
+    size?: StringNullableWithAggregatesFilter | string | null
+  }
+
   export type IDCreateInput = {
     Name: string
     PIN: number
@@ -2759,6 +3836,96 @@ export namespace Prisma {
     ID?: IntFieldUpdateOperationsInput | number
     Name?: StringFieldUpdateOperationsInput | string
     PIN?: IntFieldUpdateOperationsInput | number
+  }
+
+  export type productdataCreateInput = {
+    product_barcode: bigint | number
+    product_id: number
+    tiltle: string
+    code: string
+    fabric_name?: string | null
+    front_img: string
+    back_img: string
+    price: number
+    outside_brand?: string | null
+    description?: string | null
+    category?: string | null
+    size?: string | null
+  }
+
+  export type productdataUncheckedCreateInput = {
+    product_barcode: bigint | number
+    product_id: number
+    tiltle: string
+    code: string
+    fabric_name?: string | null
+    front_img: string
+    back_img: string
+    price: number
+    outside_brand?: string | null
+    description?: string | null
+    category?: string | null
+    size?: string | null
+  }
+
+  export type productdataUpdateInput = {
+    product_barcode?: BigIntFieldUpdateOperationsInput | bigint | number
+    product_id?: IntFieldUpdateOperationsInput | number
+    tiltle?: StringFieldUpdateOperationsInput | string
+    code?: StringFieldUpdateOperationsInput | string
+    fabric_name?: NullableStringFieldUpdateOperationsInput | string | null
+    front_img?: StringFieldUpdateOperationsInput | string
+    back_img?: StringFieldUpdateOperationsInput | string
+    price?: IntFieldUpdateOperationsInput | number
+    outside_brand?: NullableStringFieldUpdateOperationsInput | string | null
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    category?: NullableStringFieldUpdateOperationsInput | string | null
+    size?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type productdataUncheckedUpdateInput = {
+    product_barcode?: BigIntFieldUpdateOperationsInput | bigint | number
+    product_id?: IntFieldUpdateOperationsInput | number
+    tiltle?: StringFieldUpdateOperationsInput | string
+    code?: StringFieldUpdateOperationsInput | string
+    fabric_name?: NullableStringFieldUpdateOperationsInput | string | null
+    front_img?: StringFieldUpdateOperationsInput | string
+    back_img?: StringFieldUpdateOperationsInput | string
+    price?: IntFieldUpdateOperationsInput | number
+    outside_brand?: NullableStringFieldUpdateOperationsInput | string | null
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    category?: NullableStringFieldUpdateOperationsInput | string | null
+    size?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type productdataUpdateManyMutationInput = {
+    product_barcode?: BigIntFieldUpdateOperationsInput | bigint | number
+    product_id?: IntFieldUpdateOperationsInput | number
+    tiltle?: StringFieldUpdateOperationsInput | string
+    code?: StringFieldUpdateOperationsInput | string
+    fabric_name?: NullableStringFieldUpdateOperationsInput | string | null
+    front_img?: StringFieldUpdateOperationsInput | string
+    back_img?: StringFieldUpdateOperationsInput | string
+    price?: IntFieldUpdateOperationsInput | number
+    outside_brand?: NullableStringFieldUpdateOperationsInput | string | null
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    category?: NullableStringFieldUpdateOperationsInput | string | null
+    size?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type productdataUncheckedUpdateManyInput = {
+    product_barcode?: BigIntFieldUpdateOperationsInput | bigint | number
+    product_id?: IntFieldUpdateOperationsInput | number
+    tiltle?: StringFieldUpdateOperationsInput | string
+    code?: StringFieldUpdateOperationsInput | string
+    fabric_name?: NullableStringFieldUpdateOperationsInput | string | null
+    front_img?: StringFieldUpdateOperationsInput | string
+    back_img?: StringFieldUpdateOperationsInput | string
+    price?: IntFieldUpdateOperationsInput | number
+    outside_brand?: NullableStringFieldUpdateOperationsInput | string | null
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    category?: NullableStringFieldUpdateOperationsInput | string | null
+    size?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type IntFilter = {
@@ -2875,6 +4042,121 @@ export namespace Prisma {
     PIN?: SortOrder
   }
 
+  export type BigIntFilter = {
+    equals?: bigint | number
+    in?: Enumerable<bigint> | Enumerable<number>
+    notIn?: Enumerable<bigint> | Enumerable<number>
+    lt?: bigint | number
+    lte?: bigint | number
+    gt?: bigint | number
+    gte?: bigint | number
+    not?: NestedBigIntFilter | bigint | number
+  }
+
+  export type StringNullableFilter = {
+    equals?: string | null
+    in?: Enumerable<string> | null
+    notIn?: Enumerable<string> | null
+    lt?: string
+    lte?: string
+    gt?: string
+    gte?: string
+    contains?: string
+    startsWith?: string
+    endsWith?: string
+    not?: NestedStringNullableFilter | string | null
+  }
+
+  export type productdataCountOrderByAggregateInput = {
+    product_barcode?: SortOrder
+    product_id?: SortOrder
+    tiltle?: SortOrder
+    code?: SortOrder
+    fabric_name?: SortOrder
+    front_img?: SortOrder
+    back_img?: SortOrder
+    price?: SortOrder
+    outside_brand?: SortOrder
+    description?: SortOrder
+    category?: SortOrder
+    size?: SortOrder
+  }
+
+  export type productdataAvgOrderByAggregateInput = {
+    product_barcode?: SortOrder
+    product_id?: SortOrder
+    price?: SortOrder
+  }
+
+  export type productdataMaxOrderByAggregateInput = {
+    product_barcode?: SortOrder
+    product_id?: SortOrder
+    tiltle?: SortOrder
+    code?: SortOrder
+    fabric_name?: SortOrder
+    front_img?: SortOrder
+    back_img?: SortOrder
+    price?: SortOrder
+    outside_brand?: SortOrder
+    description?: SortOrder
+    category?: SortOrder
+    size?: SortOrder
+  }
+
+  export type productdataMinOrderByAggregateInput = {
+    product_barcode?: SortOrder
+    product_id?: SortOrder
+    tiltle?: SortOrder
+    code?: SortOrder
+    fabric_name?: SortOrder
+    front_img?: SortOrder
+    back_img?: SortOrder
+    price?: SortOrder
+    outside_brand?: SortOrder
+    description?: SortOrder
+    category?: SortOrder
+    size?: SortOrder
+  }
+
+  export type productdataSumOrderByAggregateInput = {
+    product_barcode?: SortOrder
+    product_id?: SortOrder
+    price?: SortOrder
+  }
+
+  export type BigIntWithAggregatesFilter = {
+    equals?: bigint | number
+    in?: Enumerable<bigint> | Enumerable<number>
+    notIn?: Enumerable<bigint> | Enumerable<number>
+    lt?: bigint | number
+    lte?: bigint | number
+    gt?: bigint | number
+    gte?: bigint | number
+    not?: NestedBigIntWithAggregatesFilter | bigint | number
+    _count?: NestedIntFilter
+    _avg?: NestedFloatFilter
+    _sum?: NestedBigIntFilter
+    _min?: NestedBigIntFilter
+    _max?: NestedBigIntFilter
+  }
+
+  export type StringNullableWithAggregatesFilter = {
+    equals?: string | null
+    in?: Enumerable<string> | null
+    notIn?: Enumerable<string> | null
+    lt?: string
+    lte?: string
+    gt?: string
+    gte?: string
+    contains?: string
+    startsWith?: string
+    endsWith?: string
+    not?: NestedStringNullableWithAggregatesFilter | string | null
+    _count?: NestedIntNullableFilter
+    _min?: NestedStringNullableFilter
+    _max?: NestedStringNullableFilter
+  }
+
   export type StringFieldUpdateOperationsInput = {
     set?: string
   }
@@ -2885,6 +4167,18 @@ export namespace Prisma {
     decrement?: number
     multiply?: number
     divide?: number
+  }
+
+  export type BigIntFieldUpdateOperationsInput = {
+    set?: bigint | number
+    increment?: bigint | number
+    decrement?: bigint | number
+    multiply?: bigint | number
+    divide?: bigint | number
+  }
+
+  export type NullableStringFieldUpdateOperationsInput = {
+    set?: string | null
   }
 
   export type NestedIntFilter = {
@@ -2954,6 +4248,75 @@ export namespace Prisma {
     _count?: NestedIntFilter
     _min?: NestedStringFilter
     _max?: NestedStringFilter
+  }
+
+  export type NestedBigIntFilter = {
+    equals?: bigint | number
+    in?: Enumerable<bigint> | Enumerable<number>
+    notIn?: Enumerable<bigint> | Enumerable<number>
+    lt?: bigint | number
+    lte?: bigint | number
+    gt?: bigint | number
+    gte?: bigint | number
+    not?: NestedBigIntFilter | bigint | number
+  }
+
+  export type NestedStringNullableFilter = {
+    equals?: string | null
+    in?: Enumerable<string> | null
+    notIn?: Enumerable<string> | null
+    lt?: string
+    lte?: string
+    gt?: string
+    gte?: string
+    contains?: string
+    startsWith?: string
+    endsWith?: string
+    not?: NestedStringNullableFilter | string | null
+  }
+
+  export type NestedBigIntWithAggregatesFilter = {
+    equals?: bigint | number
+    in?: Enumerable<bigint> | Enumerable<number>
+    notIn?: Enumerable<bigint> | Enumerable<number>
+    lt?: bigint | number
+    lte?: bigint | number
+    gt?: bigint | number
+    gte?: bigint | number
+    not?: NestedBigIntWithAggregatesFilter | bigint | number
+    _count?: NestedIntFilter
+    _avg?: NestedFloatFilter
+    _sum?: NestedBigIntFilter
+    _min?: NestedBigIntFilter
+    _max?: NestedBigIntFilter
+  }
+
+  export type NestedStringNullableWithAggregatesFilter = {
+    equals?: string | null
+    in?: Enumerable<string> | null
+    notIn?: Enumerable<string> | null
+    lt?: string
+    lte?: string
+    gt?: string
+    gte?: string
+    contains?: string
+    startsWith?: string
+    endsWith?: string
+    not?: NestedStringNullableWithAggregatesFilter | string | null
+    _count?: NestedIntNullableFilter
+    _min?: NestedStringNullableFilter
+    _max?: NestedStringNullableFilter
+  }
+
+  export type NestedIntNullableFilter = {
+    equals?: number | null
+    in?: Enumerable<number> | null
+    notIn?: Enumerable<number> | null
+    lt?: number
+    lte?: number
+    gt?: number
+    gte?: number
+    not?: NestedIntNullableFilter | number | null
   }
 
 

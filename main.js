@@ -2,6 +2,7 @@ const { app, BrowserWindow, ipcMain } = require("electron");
 const path = require("path");
 const axios = require("axios");
 const { log } = require("console");
+const { selectproduct } = require("./assets/database");
 const isDev = !app.isPackaged;
 const RESOURCES_PATH = app.isPackaged
   ? path.join(process.resourcesPath)
@@ -9,19 +10,21 @@ const RESOURCES_PATH = app.isPackaged
 const getAssetPath = (...paths) => {
   return path.join(RESOURCES_PATH, ...paths);
 };
-const { PrismaClient } = require(getAssetPath("./assets/database/client"));
-const prisma = new PrismaClient();
+const { addDtata, addproduct, delproduct } = require(getAssetPath(
+  "./assets/database.js"
+));
+
 const knex = require("knex")({
   client: "better-sqlite3",
   connection: {
-    filename: getAssetPath("./assets/dev.db"),
+    filename: path.join("./assets/dev.db"),
   },
   useNullAsDefault: true,
 });
-
+let win;
 function createWindow() {
   // Browser Window <- Renderer Process
-  const win = new BrowserWindow({
+  win = new BrowserWindow({
     width: 1200,
     height: 800,
     backgroundColor: "white",
@@ -29,17 +32,13 @@ function createWindow() {
       nodeIntegration: false,
       worldSafeExecuteJavaScript: true,
       contextIsolation: true,
+      enableRemoteModule: true,
       preload: path.join(__dirname, "./preload.js"),
     },
   });
   win.loadFile("index.html");
-  isDev && win.webContents.openDevTools();
-}
-
-if (isDev) {
-  require("electron-reload")(__dirname, {
-    electron: path.join(__dirname, "node_modules", ".bin", "electron"),
-  });
+  win.webContents.openDevTools();
+  win.maximize();
 }
 
 app.whenReady().then(createWindow);
@@ -51,68 +50,34 @@ app.on("window-all-closed", () => {
 app.on("activate", () => {
   if (BrowserWindow.getAllWindows().length === 0) {
     createWindow();
+    // win.webContents.openDevTools();
   }
 });
 
-ipcMain.handle("test", async (event, someArgument) => {
-  const data2 = await prisma.user.findMany();
-  console.log(data2);
-  let product;
-  const url = "https://khwanta-back-zfn2h52c7a-as.a.run.app";
-  axios
-    .get(`${url}/getPosProduct`)
-    .then((e) => {
-      // console.log(e.data);
-      product = e.data;
-      console.log(product);
-      return e.data;
-    })
-    .catch(function (error) {
-      res.status(400).json({ error: error.message });
-      console.log(error);
-    });
-  // const res = await axios.get(`${url}/getPosProduct`);
-  // console.log(res.JSON.stringify());
-  // return res;
-});
-ipcMain.on("test", async (event, someArgument) => {
-  const data2 = await prisma.user.findMany();
-  console.log(data2);
-  let product;
-  const url = "https://khwanta-back-zfn2h52c7a-as.a.run.app";
-  axios
-    .get(`${url}/getPosProduct`)
-    .then((e) => {
-      // console.log(e.data);
-      product = e.data;
-      console.log(product);
-      event.reply("test", e.data);
-      // return e.data;
-    })
-    .catch(function (error) {
-      res.status(400).json({ error: error.message });
-      console.log(error);
-    });
-  // axios.get("http://localhost:8080/getdata").then(async (e) => {
-  //   event.reply("getdata", e.data);
-  // });
-  // const res = await axios.get(`${url}/getPosProduct`);
-  // console.log(res.JSON.stringify());
-  // return res;
-});
 ipcMain.on("getProduct", async (event, someArgument) => {
-  console.log(1);
-  const url = "https://khwanta-back-zfn2h52c7a-as.a.run.app";
-  axios
-    .get(`${url}/getPosProduct`)
-    .then((e) => {
-      // console.log(e.data);
-      product = e.data;
-      event.reply("getProduct", e.data);
-      // return e.data;
-    })
-    .catch(function (error) {
-      res.status(400).json({ error: error.message });
-      console.log(error);
-    });
+  console.log(someArgument);
+  // win.webContents.openDevTools();
+
+  if (someArgument === "online") {
+    const url = "http://localhost:8080";
+
+    axios
+      .get(`${url}/getallproductdata`)
+      .then(async (e) => {
+        product = e.data;
+        delproduct();
+        e.data.map((e) => {
+          addproduct(e);
+        });
+        const data = await selectproduct();
+        event.reply("getProduct", data);
+      })
+      .catch(function (error) {
+        event.reply("getProduct", "no Internet");
+        console.log(error);
+      });
+  } else {
+    const data = await selectproduct();
+    event.reply("getProduct", data);
+  }
 });

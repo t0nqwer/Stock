@@ -99,6 +99,21 @@ exports.Prisma.IDScalarFieldEnum = makeEnum({
   PIN: 'PIN'
 });
 
+exports.Prisma.ProductdataScalarFieldEnum = makeEnum({
+  product_barcode: 'product_barcode',
+  product_id: 'product_id',
+  tiltle: 'tiltle',
+  code: 'code',
+  fabric_name: 'fabric_name',
+  front_img: 'front_img',
+  back_img: 'back_img',
+  price: 'price',
+  outside_brand: 'outside_brand',
+  description: 'description',
+  category: 'category',
+  size: 'size'
+});
+
 exports.Prisma.SortOrder = makeEnum({
   asc: 'asc',
   desc: 'desc'
@@ -117,10 +132,11 @@ exports.Prisma.UserScalarFieldEnum = makeEnum({
 
 exports.Prisma.ModelName = makeEnum({
   ID: 'ID',
-  user: 'user'
+  user: 'user',
+  productdata: 'productdata'
 });
 
-const dmmfString = "{\"datamodel\":{\"enums\":[],\"models\":[{\"name\":\"ID\",\"dbName\":null,\"fields\":[{\"name\":\"ID\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":true,\"isReadOnly\":false,\"hasDefaultValue\":true,\"type\":\"Int\",\"default\":{\"name\":\"autoincrement\",\"args\":[]},\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"Name\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"String\",\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"PIN\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"Int\",\"isGenerated\":false,\"isUpdatedAt\":false}],\"primaryKey\":null,\"uniqueFields\":[],\"uniqueIndexes\":[],\"isGenerated\":false},{\"name\":\"user\",\"dbName\":null,\"fields\":[{\"name\":\"ID\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":true,\"isReadOnly\":false,\"hasDefaultValue\":true,\"type\":\"Int\",\"default\":{\"name\":\"autoincrement\",\"args\":[]},\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"Name\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"String\",\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"PIN\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"Int\",\"isGenerated\":false,\"isUpdatedAt\":false}],\"primaryKey\":null,\"uniqueFields\":[],\"uniqueIndexes\":[],\"isGenerated\":false}],\"types\":[]},\"mappings\":{\"modelOperations\":[{\"model\":\"ID\",\"plural\":\"iDS\",\"findUnique\":\"findUniqueID\",\"findUniqueOrThrow\":\"findUniqueIDOrThrow\",\"findFirst\":\"findFirstID\",\"findFirstOrThrow\":\"findFirstIDOrThrow\",\"findMany\":\"findManyID\",\"create\":\"createOneID\",\"delete\":\"deleteOneID\",\"update\":\"updateOneID\",\"deleteMany\":\"deleteManyID\",\"updateMany\":\"updateManyID\",\"upsert\":\"upsertOneID\",\"aggregate\":\"aggregateID\",\"groupBy\":\"groupByID\"},{\"model\":\"user\",\"plural\":\"users\",\"findUnique\":\"findUniqueuser\",\"findUniqueOrThrow\":\"findUniqueuserOrThrow\",\"findFirst\":\"findFirstuser\",\"findFirstOrThrow\":\"findFirstuserOrThrow\",\"findMany\":\"findManyuser\",\"create\":\"createOneuser\",\"delete\":\"deleteOneuser\",\"update\":\"updateOneuser\",\"deleteMany\":\"deleteManyuser\",\"updateMany\":\"updateManyuser\",\"upsert\":\"upsertOneuser\",\"aggregate\":\"aggregateuser\",\"groupBy\":\"groupByuser\"}],\"otherOperations\":{\"read\":[],\"write\":[\"executeRaw\",\"queryRaw\"]}}}"
+const dmmfString = "{\"datamodel\":{\"enums\":[],\"models\":[{\"name\":\"ID\",\"dbName\":null,\"fields\":[{\"name\":\"ID\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":true,\"isReadOnly\":false,\"hasDefaultValue\":true,\"type\":\"Int\",\"default\":{\"name\":\"autoincrement\",\"args\":[]},\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"Name\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"String\",\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"PIN\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"Int\",\"isGenerated\":false,\"isUpdatedAt\":false}],\"primaryKey\":null,\"uniqueFields\":[],\"uniqueIndexes\":[],\"isGenerated\":false},{\"name\":\"user\",\"dbName\":null,\"fields\":[{\"name\":\"ID\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":true,\"isReadOnly\":false,\"hasDefaultValue\":true,\"type\":\"Int\",\"default\":{\"name\":\"autoincrement\",\"args\":[]},\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"Name\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"String\",\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"PIN\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"Int\",\"isGenerated\":false,\"isUpdatedAt\":false}],\"primaryKey\":null,\"uniqueFields\":[],\"uniqueIndexes\":[],\"isGenerated\":false},{\"name\":\"productdata\",\"dbName\":null,\"fields\":[{\"name\":\"product_barcode\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":true,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"BigInt\",\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"product_id\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"Int\",\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"tiltle\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"String\",\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"code\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"String\",\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"fabric_name\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":false,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"String\",\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"front_img\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"String\",\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"back_img\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"String\",\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"price\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"Int\",\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"outside_brand\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":false,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"String\",\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"description\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":false,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"String\",\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"category\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":false,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"String\",\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"size\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":false,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"String\",\"isGenerated\":false,\"isUpdatedAt\":false}],\"primaryKey\":null,\"uniqueFields\":[],\"uniqueIndexes\":[],\"isGenerated\":false}],\"types\":[]},\"mappings\":{\"modelOperations\":[{\"model\":\"ID\",\"plural\":\"iDS\",\"findUnique\":\"findUniqueID\",\"findUniqueOrThrow\":\"findUniqueIDOrThrow\",\"findFirst\":\"findFirstID\",\"findFirstOrThrow\":\"findFirstIDOrThrow\",\"findMany\":\"findManyID\",\"create\":\"createOneID\",\"delete\":\"deleteOneID\",\"update\":\"updateOneID\",\"deleteMany\":\"deleteManyID\",\"updateMany\":\"updateManyID\",\"upsert\":\"upsertOneID\",\"aggregate\":\"aggregateID\",\"groupBy\":\"groupByID\"},{\"model\":\"user\",\"plural\":\"users\",\"findUnique\":\"findUniqueuser\",\"findUniqueOrThrow\":\"findUniqueuserOrThrow\",\"findFirst\":\"findFirstuser\",\"findFirstOrThrow\":\"findFirstuserOrThrow\",\"findMany\":\"findManyuser\",\"create\":\"createOneuser\",\"delete\":\"deleteOneuser\",\"update\":\"updateOneuser\",\"deleteMany\":\"deleteManyuser\",\"updateMany\":\"updateManyuser\",\"upsert\":\"upsertOneuser\",\"aggregate\":\"aggregateuser\",\"groupBy\":\"groupByuser\"},{\"model\":\"productdata\",\"plural\":\"productdata\",\"findUnique\":\"findUniqueproductdata\",\"findUniqueOrThrow\":\"findUniqueproductdataOrThrow\",\"findFirst\":\"findFirstproductdata\",\"findFirstOrThrow\":\"findFirstproductdataOrThrow\",\"findMany\":\"findManyproductdata\",\"create\":\"createOneproductdata\",\"delete\":\"deleteOneproductdata\",\"update\":\"updateOneproductdata\",\"deleteMany\":\"deleteManyproductdata\",\"updateMany\":\"updateManyproductdata\",\"upsert\":\"upsertOneproductdata\",\"aggregate\":\"aggregateproductdata\",\"groupBy\":\"groupByproductdata\"}],\"otherOperations\":{\"read\":[],\"write\":[\"executeRaw\",\"queryRaw\"]}}}"
 const dmmf = JSON.parse(dmmfString)
 exports.Prisma.dmmf = JSON.parse(dmmfString)
 
@@ -135,7 +151,7 @@ const config = {
       "value": "prisma-client-js"
     },
     "output": {
-      "value": "C:\\Users\\Windows\\Desktop\\programing\\Stock\\assets\\database\\client",
+      "value": "C:\\Users\\ton\\Desktop\\programming\\KhwantaStock\\Stock\\assets\\database\\client",
       "fromEnvVar": null
     },
     "config": {
@@ -151,8 +167,7 @@ const config = {
     "isCustomOutput": true
   },
   "relativeEnvPaths": {
-    "rootEnvPath": "..\\..\\..\\.env",
-    "schemaEnvPath": "..\\..\\..\\.env"
+    "rootEnvPath": null
   },
   "relativePath": "..\\..\\..\\prisma",
   "clientVersion": "4.9.0",

@@ -20,3 +20,18 @@ model user {
   Name String
   PIN  Int
 }
+
+model productdata{
+  product_barcode BigInt @id
+  product_id Int
+  tiltle String
+  code String
+  fabric_name String?
+  front_img String
+  back_img String
+  price Int
+  outside_brand String?
+  description String?
+  category String?
+  size String?
+}

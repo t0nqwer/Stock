@@ -41,6 +41,10 @@ module.exports = {
       backgroundImage: {
         "hero-pattern": "url('https://i.ibb.co/MkvLDfb/Rectangle-4389.png')",
       },
+      animation: {
+        bounce200: "bounce 1s infinite 200ms",
+        bounce400: "bounce 1s infinite 400ms",
+      },
     },
   },
   plugins: [],

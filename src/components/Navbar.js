@@ -55,7 +55,6 @@ const Navbar = () => {
   }
   let nextDate = new Date();
   if (nextDate.getMinutes() === 0) {
-    console.log(1);
     callEveryHour();
   } else {
     nextDate.setHours(nextDate.getHours() + 1);
@@ -65,6 +64,11 @@ const Navbar = () => {
     var difference = nextDate - new Date();
     setTimeout(callEveryHour, difference);
   }
+  useEffect(() => {
+    if (isMorning) return setGreeding("อรุณสวัสดิ์");
+    if (isAfternoon) return setGreeding("สวัสดียามบ่าย");
+    setGreeding("สวัสดียามเย็น");
+  }, []);
 
   useEffect(() => {
     const handleResize = () => setScreenSize(window.innerWidth);

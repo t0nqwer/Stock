@@ -14,15 +14,12 @@ contextBridge.exposeInMainWorld("bridge", {
   },
   FindProduct: {
     send(channel, data) {
-      ipcRenderer.send("getProduct");
+      ipcRenderer.send("getProduct", data);
     },
     once(channel, func) {
       const validChannels = ["getProduct"];
       ipcRenderer.removeAllListeners("getProduct");
       if (validChannels.includes(channel)) {
-        console.log(ipcRenderer.listenerCount("getProduct"));
-        console.log(ipcRenderer.listenerCount("test"));
-
         ipcRenderer.on(channel, (event, test) => func(test));
       }
     },

@@ -95,6 +95,21 @@ exports.Prisma.IDScalarFieldEnum = makeEnum({
   PIN: 'PIN'
 });
 
+exports.Prisma.ProductdataScalarFieldEnum = makeEnum({
+  product_barcode: 'product_barcode',
+  product_id: 'product_id',
+  tiltle: 'tiltle',
+  code: 'code',
+  fabric_name: 'fabric_name',
+  front_img: 'front_img',
+  back_img: 'back_img',
+  price: 'price',
+  outside_brand: 'outside_brand',
+  description: 'description',
+  category: 'category',
+  size: 'size'
+});
+
 exports.Prisma.SortOrder = makeEnum({
   asc: 'asc',
   desc: 'desc'
@@ -113,7 +128,8 @@ exports.Prisma.UserScalarFieldEnum = makeEnum({
 
 exports.Prisma.ModelName = makeEnum({
   ID: 'ID',
-  user: 'user'
+  user: 'user',
+  productdata: 'productdata'
 });
 
 /**

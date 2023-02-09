@@ -4,37 +4,41 @@ import { IoSettingsSharp } from "react-icons/io5";
 import { TooltipComponent } from "@syncfusion/ej2-react-popups";
 import "./App.css";
 import { Navbar, Footer, Sidebar, ThemeSettings } from "./components";
-import { Product, Stock, Import, Export, Dashboard } from "./pages";
+import { Product, Stock, Import, Export, Dashboard, Test } from "./pages";
 import { useAppContext } from "./contexts/AppContext";
 import { useDataContext } from "./contexts/DataContext";
-import { testinvoke } from "./hook/fetch";
+import { testinvoke, checkOnlineStatus } from "./hook/fetch";
+import Loader from "./components/Loader";
 const app = () => {
-  const { activeMenu, currentColor } = useAppContext();
+  const { activeMenu, currentColor, isLoading, setIsLoading } = useAppContext();
   const { ProductData, setProductData } = useDataContext();
+
   useEffect(() => {
-    bridge.FindProduct.send("getProduct");
+    if (navigator.onLine) {
+      // make data request
+      setIsLoading(true);
+      bridge.FindProduct.send("getProduct", "online");
+    } else {
+      bridge.FindProduct.send("getProduct", "offline");
+    }
   }, []);
   bridge.FindProduct.once("getProduct", (arg) => {
-    console.log(1);
+    setIsLoading(false);
     console.log(arg);
+    setProductData(arg);
   });
-  let buffer = ""; // buffer for constructing the barcode from key presses
 
-  window.addEventListener("keypress", (event) => {
-    let data = buffer || "";
-    if (event.key !== "Enter") {
-      // barcode ends with enter -key
-      data += event.key;
-      buffer = data;
-    } else {
-      buffer = "";
-      console.log(data);
-    }
-  });
   return (
-    <div>
+    <div className="h-full">
+      {isLoading ? (
+        <div className=" fixed w-full h-full  bg-gray-800 z-50 bg-opacity-30 backdrop-blur-sm flex justify-center items-center">
+          <Loader />
+        </div>
+      ) : (
+        ""
+      )}
       <HashRouter>
-        <div className="flex relative dark:bg-main-dark-bg">
+        <div className="flex relative dark:bg-main-dark-bg h-full">
           <div className="fixed right-4 bottom-4" style={{ zIndex: "1000" }}>
             <TooltipComponent content="Setting" position="Top">
               <button
@@ -47,7 +51,7 @@ const app = () => {
             </TooltipComponent>
           </div>
           {activeMenu ? (
-            <div className="w-72 fixed sidebar dark:bg-secondary-dark-bg bg-white ">
+            <div className="  h-full w-72 fixed sidebar dark:bg-secondary-dark-bg bg-white ">
               <Sidebar />
             </div>
           ) : (
@@ -58,14 +62,14 @@ const app = () => {
           <div
             className={
               activeMenu
-                ? "dark:bg-main-dark-bg  bg-main-bg min-h-screen md:ml-72 w-full  "
-                : "bg-main-bg dark:bg-main-dark-bg  w-full min-h-screen flex-2 "
+                ? "dark:bg-main-dark-bg  bg-main-bg h-full md:ml-72 w-full  flex flex-col  "
+                : "bg-main-bg dark:bg-main-dark-bg  w-full h-full flex flex-col  "
             }
           >
-            <div className="fixed md:static bg-main-bg dark:bg-main-dark-bg navbar w-full ">
+            <div className=" bg-main-bg dark:bg-main-dark-bg navbar w-full ">
               <Navbar />
             </div>
-            <div>
+            <div className="grow">
               {/* {themeSettings && <ThemeSettings />} */}
 
               <Routes>
@@ -77,7 +81,6 @@ const app = () => {
                 <Route path="/Export" element={<Export />} />
               </Routes>
             </div>
-            <Footer />
           </div>
         </div>
       </HashRouter>

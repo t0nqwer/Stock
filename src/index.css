@@ -22,10 +22,29 @@
   .calculator {
     @apply w-16 h-16 flex justify-center items-center text-4xl  text-center rounded-full  outline hover:bg-white hover:text-primary active:bg-secondary;
   }
+
   .main {
     height: 100vh;
-    overflow-y: hidden; /* Hide vertical scrollbar */
-    overflow-x: hidden; /* Hide horizontal scrollbar */
+  }
+  @keyframes dance {
+    0%,
+    100% {
+      transform: translateY(-50%);
+      animation-timing-function: cubic-bezier(0.8, 0, 1, 1);
+    }
+    50% {
+      transform: none;
+      animation-timing-function: cubic-bezier(0, 0, 0.2, 1);
+    }
+  }
+  .animate-dance {
+    animation: dance 1s infinite;
+  }
+  .animate-dance200 {
+    animation: dance 1s infinite 200ms;
+  }
+  .animate-dance400 {
+    animation: dance 1s infinite 400ms;
   }
 }
 @layer base {
@@ -36,7 +55,5 @@
     height: 100vh;
     margin: 0;
     padding: 0;
-    overflow-y: hidden; /* Hide vertical scrollbar */
-    overflow-x: hidden; /* Hide horizontal scrollbar */
   }
 }

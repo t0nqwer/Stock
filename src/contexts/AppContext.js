@@ -16,6 +16,7 @@ export const AppContextProvider = ({ children }) => {
   const [themeSettings, setThemeSettings] = useState(false);
   const [activeMenu, setActiveMenu] = useState(true);
   const [isClicked, setIsClicked] = useState(initialState);
+  const [isLoading, setIsLoading] = useState(false);
 
   const setMode = (e) => {
     setCurrentMode(e.target.value);
@@ -48,6 +49,8 @@ export const AppContextProvider = ({ children }) => {
         setColor,
         themeSettings,
         setThemeSettings,
+        isLoading,
+        setIsLoading,
       }}
     >
       {" "}
