@@ -14,7 +14,7 @@ const Product = () => {
   }, [ProductData]);
 
   return (
-    <div className="grid grid-cols-4 gap-6 mt-5 p-5 overflow-scroll">
+    <div className="grid  sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-6 mt-5 p-5 overflow-scroll">
       {showdata.map((e) => {
         return (
           <Card

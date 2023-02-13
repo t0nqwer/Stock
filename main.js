@@ -40,6 +40,11 @@ function createWindow() {
   win.webContents.openDevTools();
   win.maximize();
 }
+if (isDev) {
+  require("electron-reload")(__dirname, {
+    electron: path.join(__dirname, "node_modules", ".bin", "electron"),
+  });
+}
 
 app.whenReady().then(createWindow);
 app.on("window-all-closed", () => {
@@ -58,7 +63,7 @@ ipcMain.on("getProduct", async (event, someArgument) => {
   console.log(someArgument);
   // win.webContents.openDevTools();
 
-  if (someArgument === "online") {
+  if (someArgument === "oline") {
     const url = "http://localhost:8080";
 
     axios

@@ -5,7 +5,7 @@
   "main": "main.js",
   "scripts": {
     "start": "nodemon --exec electron .",
-    "dev": "",
+    "dev": "electron .",
     "Server": "node server/server.js",
     "watch": "webpack --config webpack.common.js --watch",
     "postinstall": "electron-builder install-app-deps",

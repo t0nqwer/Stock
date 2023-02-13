@@ -62,14 +62,14 @@ const app = () => {
           <div
             className={
               activeMenu
-                ? "dark:bg-main-dark-bg  bg-main-bg h-full md:ml-72 w-full  flex flex-col  "
-                : "bg-main-bg dark:bg-main-dark-bg  w-full h-full flex flex-col  "
+                ? "dark:bg-main-dark-bg  bg-main-bg h-full md:ml-72 w-full  flex flex-col overflow-hidden   "
+                : "bg-main-bg dark:bg-main-dark-bg  w-full h-full flex flex-col overflow-hidden  "
             }
           >
             <div className=" bg-main-bg dark:bg-main-dark-bg navbar w-full ">
               <Navbar />
             </div>
-            <div className="grow">
+            <div className="">
               {/* {themeSettings && <ThemeSettings />} */}
 
               <Routes>

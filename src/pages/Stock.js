@@ -1,5 +1,5 @@
-import React from "react";
-import { Header } from "../components";
+import React, { useState } from "react";
+import { Header, Table } from "../components";
 import {
   GridComponent,
   ColumnsDirective,
@@ -37,6 +37,7 @@ export const contextMenuItems = [
 ];
 const Stock = () => {
   const { ProductData, setProductData } = useDataContext();
+  const [setShowtable, setsetShowtable] = useState([]);
 
   const ordersGrid = [
     {
@@ -87,31 +88,33 @@ const Stock = () => {
   };
   return (
     <div className="m-2 md:m-10 mt-24 p-5  bg-white rounded-3xl">
-      <Header category="สินค้า" title="สต๊อคสินค้า" />
-      <GridComponent
-        dataSource={ProductData}
-        allowPaging={true}
-        allowSorting={true}
-        pageSettings={{ pageCount: 10, pageSize: 15 }}
-        editSettings={editing}
-        toolbar={toolbarOptions}
-        contextMenuItems={contextMenuItems}
-        height="auto"
-        className=" text-lg"
-        created={created}
-      >
-        <ColumnsDirective>
-          {/* eslint-disable-next-line react/jsx-props-no-spreading */}
-          {ordersGrid.map((item, index) => (
-            <ColumnDirective key={index} {...item} />
-          ))}
-        </ColumnsDirective>
-        <Inject
-          services={[Search, ContextMenu, Page, Toolbar, Edit, Sort, Resize]}
-        />
-      </GridComponent>
+      <Table data={ProductData} rowsPerPage={15} />
     </div>
   );
 };
 
 export default Stock;
+
+//  <Header category="สินค้า" title="สต๊อคสินค้า" />
+//       <GridComponent
+//         dataSource={ProductData}
+//         allowPaging={true}
+//         allowSorting={true}
+//         pageSettings={{ pageCount: 10, pageSize: 15 }}
+//         editSettings={editing}
+//         toolbar={toolbarOptions}
+//         contextMenuItems={contextMenuItems}
+//         height="auto"
+//         className=" text-lg"
+//         created={created}
+//       >
+//         <ColumnsDirective>
+
+//           {ordersGrid.map((item, index) => (
+//             <ColumnDirective key={index} {...item} />
+//           ))}
+//         </ColumnsDirective>
+//         <Inject
+//           services={[Search, ContextMenu, Page, Toolbar, Edit, Sort, Resize]}
+//         />
+//       </GridComponent>
