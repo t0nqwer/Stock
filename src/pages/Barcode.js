@@ -1,0 +1,196 @@
+import React, { useEffect, useState } from "react";
+import { Header } from "../components";
+import usePrintBarcode from "../store/barcodeStore";
+import Barcodelist from "../components/Barcode/Barcodelist";
+import BarcodeSelect from "../components/Barcode/BarcodeSelect";
+import JsBarcode from "jsbarcode";
+
+const Barcode = () => {
+  const barcodes = usePrintBarcode((state) => state.Barcode);
+  const fetchProduct = usePrintBarcode((state) => state.fetchProduct);
+  const selectBarcode = usePrintBarcode((state) => state.selectBarcode);
+  const setSearch = usePrintBarcode((state) => state.setSearch);
+  const search = usePrintBarcode((state) => state.search);
+  const [groupCode, setGroupCode] = useState([]);
+  const [groupFabric, setGroupFabric] = useState([]);
+  useEffect(() => {
+    fetchProduct();
+  }, [fetchProduct]);
+  useEffect(() => {
+    fetchProduct(search);
+  }, [search]);
+  useEffect(() => {
+    const groupByCategory = barcodes.reduce((group, product) => {
+      const { code } = product;
+      group[code] = group[code] ?? [];
+      group[code].push(product);
+      return group;
+    }, {});
+    const arr = Object.values(groupByCategory);
+    const groupByFabric = arr.map((item) => {
+      const data = item.reduce((group, product) => {
+        const { fabric } = product;
+        group[fabric] = group[fabric] ?? [];
+        group[fabric].push(product);
+        return group;
+      }, {});
+
+      return Object.values(data);
+    });
+    setGroupCode(arr);
+    setGroupFabric(groupByFabric);
+  }, [barcodes]);
+  useEffect(() => {
+    console.log(selectBarcode);
+  }, [selectBarcode]);
+  const prindhandle = () => {
+    const myWindow = window.open("", "");
+    myWindow.document.write("<html><head><title>Print it!</title><style>");
+    myWindow.document.write(` 
+    @page {
+      size: 36mm 29mm;
+      margin: 0;
+
+    }
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      margin: 0;
+      padding: 0;
+      background: rgb(204, 204, 204);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .page {
+      display: inline-block;
+      position: relative;
+      height: 29mm;
+      width: 36mm;
+      font-size: 10pt;
+      margin: 2em auto;
+      padding: calc(var(--bleeding) + var(--margin));
+      box-shadow: 0 0 0.5cm rgba(0, 0, 0, 0.5);
+      background: white;
+    }
+
+    @media screen {
+      .page::after {
+        position: absolute;
+        content: "";
+        width: calc(100% - var(--bleeding) * 2);
+        height: calc(100% - var(--bleeding) * 2);
+        margin: var(--bleeding);
+        top: 0;
+        left: 0;
+        pointer-events: none;
+        z-index: 9999;
+      }
+    }
+    @media print {
+      .page {
+        margin: 0;
+        overflow: hidden;
+      }
+    }`);
+    myWindow.document.write("</style></head>");
+    myWindow.document.write(
+      ` <body><div class="page" onafterprint="self.close()"><button onclick="window.print()">ปริ้น</button></div>`
+    );
+
+    selectBarcode.map((e) => {
+      const print = e.printqty;
+      let i;
+      for (i = 0; i < print; i++) {
+        myWindow.document.write(`<div class="page">
+        <div style="display: flex; justify-content: space-between;">
+        <div >${e.code.toUpperCase()}-${e.size}</div>
+        <div>${e.price}</div>
+        </div>
+        <div style="font-size: 8pt;   ">${e.fabric}</div>
+        <img id="${e.barcode}${i}" xmlns="http://www.w3.org/2000/svg"
+        style="object-fit: contain;"  width="100%"
+  jsbarcode-format="code128"
+  jsbarcode-value="${e.barcode}"
+  jsbarcode-width="1"
+  jsbarcode-height="35"
+  jsbarcode-displayValue="false"
+  jsbarcode-margin="2"
+  jsbarcode-marginTop="0"
+  jsbarcode-marginBottom="0"
+  jsbarcode-marginLeft="10"
+  jsbarcode-marginRight="10"
+  jsbarcode-background="#ffffff"
+  >
+</img>
+
+        <div style="font-size: 8pt; display: flex; justify-content: center;"><div>${e.barcode.toUpperCase()}</div></div>
+        </div>`);
+      }
+    });
+    myWindow.document.write(
+      `<script src="C:/Users/ton/Desktop/JsBarcode.all.min.js"></script>`
+    );
+    // myWindow.document.write(`<script >let $ = require('JsBarcode.all.min.js')
+    // $.get('file:///path/to/app.asar/JsBarcode.all.min.js', (data) => {
+    //   console.log(data)
+    // })</script>`);
+    myWindow.document.write(`<script type="text/javascript">`);
+    selectBarcode.map((e) => {
+      const print = e.printqty;
+      let i;
+      for (i = 0; i < print; i++) {
+        myWindow.document.write(
+          `JsBarcode("#${e.barcode}${i}", "${e.barcode}",{
+            format: "code128",
+            width: 1,
+            height: 35,
+            displayValue: false,
+            margin: 2,
+            marginTop: 0,
+            marginBottom: 0,
+            marginLeft: 10,
+            marginRight: 10,
+            background: "#ffffff",
+          });`
+        );
+      }
+    });
+    myWindow.document.write(`</script></body></html>`);
+  };
+
+  return (
+    <div className=" p-5 w-full h-full flex flex-col bg-third rounded-3xl">
+      <Header title="ปริ้นบาร์โค้ด" />
+      <div className="flex h-full overflow-hidden gap-3">
+        <div className="w-1/2">
+          <div className="w-full px-5  font-semibold py-3 justify-between  rounded-xl mb-1 flex ">
+            <p>รายการสินค้า</p>
+            <input
+              className="p-2 bg-light rounded-md text-dark placeholder-primary outline-none border-transparent focus:border-transparent focus:ring-0"
+              placeholder="ค้นหา"
+              onChange={(e) => {
+                setSearch(e.target.value);
+              }}
+            />
+          </div>
+          <Barcodelist groupCode={groupCode} groupFabric={groupFabric} />
+        </div>
+        <div className="w-1/2">
+          <div className="w-full flex justify-end items-center">
+            <button
+              onClick={prindhandle}
+              className=" py-3 bg-highlight hover:bg-light text-white rounded-lg px-5 mb-1"
+            >
+              พิมพ์
+            </button>
+          </div>
+          <BarcodeSelect />
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default Barcode;

@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { AiOutlineMenu } from "react-icons/ai";
-import { FiShoppingCart } from "react-icons/fi";
-import { BsChatLeft } from "react-icons/bs";
 import { RiNotification3Line } from "react-icons/ri";
 import { MdKeyboardArrowDown } from "react-icons/md";
 import { TooltipComponent } from "@syncfusion/ej2-react-popups";
@@ -61,7 +59,7 @@ const Navbar = () => {
     nextDate.setMinutes(0);
     nextDate.setSeconds(0); // I wouldn't do milliseconds too ;)
 
-    var difference = nextDate - new Date();
+    const difference = nextDate - new Date();
     setTimeout(callEveryHour, difference);
   }
   useEffect(() => {
@@ -91,7 +89,7 @@ const Navbar = () => {
   const handleActiveMenu = () => setActiveMenu(!activeMenu);
 
   return (
-    <div className="flex justify-between p-2 md:ml-4 md:mr-6 relative">
+    <div className="flex justify-between w-full px-10 py-3 md:ml-4 md:mr-6 relative">
       <NavButton
         title="Menu"
         customFunc={handleActiveMenu}

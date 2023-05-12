@@ -1,120 +1,57 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Header, Table } from "../components";
-import {
-  GridComponent,
-  ColumnsDirective,
-  ColumnDirective,
-  Resize,
-  Sort,
-  ContextMenu,
-  Filter,
-  Page,
-  ExcelExport,
-  PdfExport,
-  Edit,
-  Inject,
-  Search,
-  Toolbar,
-} from "@syncfusion/ej2-react-grids";
-import { useDataContext } from "../contexts/DataContext";
-export const contextMenuItems = [
-  "AutoFit",
-  "AutoFitAll",
-  "SortAscending",
-  "SortDescending",
-  "Copy",
-  "Edit",
-  "Delete",
-  "Save",
-  "Cancel",
-  "PdfExport",
-  "ExcelExport",
-  "CsvExport",
-  "FirstPage",
-  "PrevPage",
-  "LastPage",
-  "NextPage",
-];
+import useProduct from "../store/store";
+import { useAppContext } from "../contexts/AppContext";
 const Stock = () => {
-  const { ProductData, setProductData } = useDataContext();
-  const [setShowtable, setsetShowtable] = useState([]);
+  const product = useProduct((state) => state.products);
+  const fetchProduct = useProduct((state) => state.fetchProduct);
+  const [Showtable, setShowtable] = useState([]);
+  const [groupCode, setGroupCode] = useState([]);
+  const [search, setSearch] = useState("");
+  const { currentColor } = useAppContext();
+  useEffect(() => {
+    fetchProduct();
+  }, [fetchProduct]);
 
-  const ordersGrid = [
-    {
-      field: "product_barcode",
-      headerText: "Barcode",
-      width: "130",
-      editType: "dropdownedit",
-      textAlign: "Center",
-    },
-    {
-      field: "code",
-      headerText: "รหัสสินค้า",
-      width: "100",
-      textAlign: "Center",
-    },
-    {
-      field: "title",
-      headerText: "ชื่อสินค้า",
-      width: "400",
-      textAlign: "Left",
-    },
-    {
-      field: "size",
-      headerText: "ไซซ์",
-      width: "80",
-      textAlign: "Center",
-    },
-    {
-      field: "price",
-      headerText: "จำนวน",
-      width: "120",
-      textAlign: "Center",
-    },
-    {
-      field: "price",
-      headerText: "ช่องเก็บ",
-      width: "120",
-      textAlign: "Center",
-    },
-  ];
+  useEffect(() => {
+    const groupByCategory = product.reduce((group, product) => {
+      const { code } = product;
+      group[code] = group[code] ?? [];
+      group[code].push(product);
+      return group;
+    }, {});
+    const arr = Object.values(groupByCategory);
+    const groupByFabric = arr.map((item) => {
+      const data = item.reduce((group, product) => {
+        const { fabric } = product;
+        group[fabric] = group[fabric] ?? [];
+        group[fabric].push(product);
+        return group;
+      }, {});
+      ``;
 
-  const toolbarOptions = ["Search"];
-  const editing = { allowDeleting: true, allowEditing: true };
-  const created = () => {
-    const collection = document.getElementsByClassName("e-input e-search");
-    console.log(collection);
-    collection[0].placeholder = "ค้นหาสินค้า";
-  };
+      return Object.values(data);
+    });
+    console.log(groupByFabric);
+    setGroupCode(arr);
+    setShowtable(groupByFabric);
+  }, [product]);
+
   return (
-    <div className="m-2 md:m-10 mt-24 p-5  bg-white rounded-3xl">
-      <Table data={ProductData} rowsPerPage={15} />
+    <div className=" p-5 w-full h-full flex flex-col bg-secondary rounded-3xl">
+      <Header category="สินค้า" title="สต๊อคสินค้า" />
+      <form>
+        <input
+          className="py-2 px-4 font-semibold bg-light rounded-md text-dark placeholder-highlight outline-none border-transparent focus:border-transparent focus:ring-0"
+          placeholder="ค้นหา"
+          onChange={(e) => {
+            fetchProduct(e.target.value);
+          }}
+        />
+      </form>
+      <Table data={Showtable} groupCode={groupCode} />
     </div>
   );
 };
 
 export default Stock;
-
-//  <Header category="สินค้า" title="สต๊อคสินค้า" />
-//       <GridComponent
-//         dataSource={ProductData}
-//         allowPaging={true}
-//         allowSorting={true}
-//         pageSettings={{ pageCount: 10, pageSize: 15 }}
-//         editSettings={editing}
-//         toolbar={toolbarOptions}
-//         contextMenuItems={contextMenuItems}
-//         height="auto"
-//         className=" text-lg"
-//         created={created}
-//       >
-//         <ColumnsDirective>
-
-//           {ordersGrid.map((item, index) => (
-//             <ColumnDirective key={index} {...item} />
-//           ))}
-//         </ColumnsDirective>
-//         <Inject
-//           services={[Search, ContextMenu, Page, Toolbar, Edit, Sort, Resize]}
-//         />
-//       </GridComponent>

@@ -7,9 +7,9 @@ const Tablefooter = ({ range, setPage, page, slice }) => {
     }
   }, [slice, page, setPage]);
   return (
-    <div className={``}>
+    <div className=" mx-4">
       {range.map((el, index) => (
-        <button key={index} className={``} onClick={() => setPage(el)}>
+        <button key={index} className="mx-4" onClick={() => setPage(el)}>
           {el}
         </button>
       ))}

@@ -5,12 +5,16 @@
 @tailwind utilities;
 
 @layer components {
-  /* .li {
-    @apply hover:bg-secondary w-60 p-3 rounded-lg text-lg;
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
   }
-  .liactive {
-    @apply bg-secondary w-60 p-3 rounded-lg text-lg;
-  } */
+
+  /* For IE, Edge and Firefox */
+  .scrollbar-hide {
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+  }
+
   .titlebar {
     -webkit-user-select: none;
     -webkit-app-region: drag;
