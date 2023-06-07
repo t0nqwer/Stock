@@ -1,5 +1,7 @@
 const { app, BrowserWindow, ipcMain } = require("electron");
 const path = require("path");
+const io = require("socket.io-client");
+const axios = require("axios");
 
 const isDev = !app.isPackaged;
 const RESOURCES_PATH = app.isPackaged
@@ -58,3 +60,25 @@ app.on("activate", () => {
     // win.webContents.openDevTools();
   }
 });
+
+// const socket = io("http://167.172.69.153");
+// const socketLocal = io("http://localhost:8585");
+
+// axios
+//   .get(`http://localhost:8585/setting`)
+//   .then(({ data }) => {
+//     socket.emit("newUser", data.ShopName);
+//   })
+//   .catch((err) => {
+//     console.log(err.message);
+//   });
+
+// socket.on("price", (data) => {
+//   socketLocal.emit("price", data);
+// });
+// socket.on("addSize", (data) => {
+//   socketLocal.emit("addSize", data);
+// });
+// socket.on("newCloth", (data) => {
+//   socketLocal.emit("newCloth", data);
+// });

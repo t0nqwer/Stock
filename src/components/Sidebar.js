@@ -8,14 +8,6 @@ import { useAppContext } from "../contexts/AppContext";
 import Logo from "../data/Logo";
 import logoimg from "../data/logo-s-white.png";
 const Sidebar = () => {
-  const { currentColor, activeMenu, setActiveMenu, screenSize } =
-    useAppContext();
-
-  const handleCloseSideBar = () => {
-    if (activeMenu !== undefined && screenSize <= 900) {
-      setActiveMenu(false);
-    }
-  };
   const activeLink =
     "flex items-center gap-1 justify-center rounded-lg  mt-5  py-4 px-2  text-white  bg-highlight text-md   ";
   const normalLink =
@@ -31,16 +23,6 @@ const Sidebar = () => {
             <img src={logoimg} className=" object-contain  px-8 pt-5" />
           </div>
         </Link>
-        <TooltipComponent content="Menu" position="BottomCenter">
-          <button
-            type="button"
-            onClick={() => setActiveMenu(!activeMenu)}
-            style={{ color: currentColor }}
-            className=" absolute top-0 right-0 text-xl rounded-full  p-2 hover:bg-light-gray  md:hidden "
-          >
-            <MdOutlineCancel />
-          </button>
-        </TooltipComponent>
       </div>
       <div className="">
         {links.map((item) => (

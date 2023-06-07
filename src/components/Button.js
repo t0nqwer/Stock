@@ -1,5 +1,5 @@
 import React from "react";
-import { useAppContext } from "../contexts/AppContext";
+
 const Button = ({
   icon,
   bgColor,
@@ -10,11 +10,10 @@ const Button = ({
   borderRadius,
   width,
 }) => {
-  const { setIsClicked, initialState } = useAppContext();
   return (
     <button
       type="button"
-      onClick={() => setIsClicked(initialState)}
+      onClick={() => {}}
       style={{ backgroundColor: bgColor, color, borderRadius }}
       className={` text-${size} p-3 w-${width} hover:drop-shadow-xl hover:bg-${bgHoverColor}`}
     >

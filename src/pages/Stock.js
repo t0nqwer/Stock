@@ -1,14 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { Header, Table } from "../components";
 import useProduct from "../store/store";
-import { useAppContext } from "../contexts/AppContext";
+
 const Stock = () => {
   const product = useProduct((state) => state.products);
   const fetchProduct = useProduct((state) => state.fetchProduct);
   const [Showtable, setShowtable] = useState([]);
   const [groupCode, setGroupCode] = useState([]);
-  const [search, setSearch] = useState("");
-  const { currentColor } = useAppContext();
+
   useEffect(() => {
     fetchProduct();
   }, [fetchProduct]);

@@ -3,7 +3,8 @@ import { Header } from "../components";
 import usePrintBarcode from "../store/barcodeStore";
 import Barcodelist from "../components/Barcode/Barcodelist";
 import BarcodeSelect from "../components/Barcode/BarcodeSelect";
-import JsBarcode from "jsbarcode";
+import useSetting from "../store/appSettingStore";
+import { notify } from "../contexts/Notification";
 
 const Barcode = () => {
   const barcodes = usePrintBarcode((state) => state.Barcode);
@@ -11,6 +12,7 @@ const Barcode = () => {
   const selectBarcode = usePrintBarcode((state) => state.selectBarcode);
   const setSearch = usePrintBarcode((state) => state.setSearch);
   const search = usePrintBarcode((state) => state.search);
+  const BarcodePath = useSetting((state) => state.BarcodePath);
   const [groupCode, setGroupCode] = useState([]);
   const [groupFabric, setGroupFabric] = useState([]);
   useEffect(() => {
@@ -44,6 +46,10 @@ const Barcode = () => {
     console.log(selectBarcode);
   }, [selectBarcode]);
   const prindhandle = () => {
+    if (selectBarcode.length === 0) return notify("โปรดเลือกสินค้า");
+    if (selectBarcode.filter((item) => item.printqty === 0).length !== 0)
+      return notify("โปรดกรอกจำนวนสินค้า");
+    if (!BarcodePath) return notify("โปรดเลือกไฟล์สร้างบาร์โค้ด");
     const myWindow = window.open("", "");
     myWindow.document.write("<html><head><title>Print it!</title><style>");
     myWindow.document.write(` 
@@ -93,49 +99,47 @@ const Barcode = () => {
         margin: 0;
         overflow: hidden;
       }
+    {    
+    .no-print {
+        display: none !important;
+    }
+
     }`);
     myWindow.document.write("</style></head>");
     myWindow.document.write(
-      ` <body><div class="page" onafterprint="self.close()"><button onclick="window.print()">ปริ้น</button></div>`
+      ` <body><div class="page no-print" onafterprint="self.close()"><button onclick="window.print()">ปริ้น</button></div>`
     );
 
     selectBarcode.map((e) => {
       const print = e.printqty;
       let i;
       for (i = 0; i < print; i++) {
-        myWindow.document.write(`<div class="page">
-        <div style="display: flex; justify-content: space-between;">
-        <div >${e.code.toUpperCase()}-${e.size}</div>
+        if (e.cloth)
+          myWindow.document.write(`<div class="page">
+          <div style="display: flex; justify-content: space-between; ">
+          <div >${e.code.toUpperCase()}-${e.size}</div>
+          <div>${e.price}</div>
+          </div>
+          <div style="font-size: 8pt;   ">${e.fabric}</div>
+          <img id="${e.barcode}${i}" xmlns="http://www.w3.org/2000/svg"
+          style="object-fit: contain;"  width="100%"></img>
+          <div style="font-size: 8pt; display: flex; justify-content: center;"><div>${e.barcode.toUpperCase()}</div></div>
+          </div>`);
+        if (!e.cloth)
+          myWindow.document.write(`<div class="page">
+        <div style="display: flex; justify-content: space-between; line-height: 1em;   font-size: 9pt;">
+        <div >${e.name}</div>
         <div>${e.price}</div>
         </div>
-        <div style="font-size: 8pt;   ">${e.fabric}</div>
+        <div style="font-size: 8pt;   ">${e.brand}</div>
         <img id="${e.barcode}${i}" xmlns="http://www.w3.org/2000/svg"
-        style="object-fit: contain;"  width="100%"
-  jsbarcode-format="code128"
-  jsbarcode-value="${e.barcode}"
-  jsbarcode-width="1"
-  jsbarcode-height="35"
-  jsbarcode-displayValue="false"
-  jsbarcode-margin="2"
-  jsbarcode-marginTop="0"
-  jsbarcode-marginBottom="0"
-  jsbarcode-marginLeft="10"
-  jsbarcode-marginRight="10"
-  jsbarcode-background="#ffffff"
-  >
-</img>
-
+        style="object-fit: contain;"  width="100%"></img>
         <div style="font-size: 8pt; display: flex; justify-content: center;"><div>${e.barcode.toUpperCase()}</div></div>
         </div>`);
       }
     });
-    myWindow.document.write(
-      `<script src="C:/Users/ton/Desktop/JsBarcode.all.min.js"></script>`
-    );
-    // myWindow.document.write(`<script >let $ = require('JsBarcode.all.min.js')
-    // $.get('file:///path/to/app.asar/JsBarcode.all.min.js', (data) => {
-    //   console.log(data)
-    // })</script>`);
+    myWindow.document.write(`<script src="${BarcodePath}"></script>`);
+
     myWindow.document.write(`<script type="text/javascript">`);
     selectBarcode.map((e) => {
       const print = e.printqty;

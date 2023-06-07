@@ -5,13 +5,8 @@ import {
   TbPackageExport,
 } from "react-icons/tb";
 import { GiSewingMachine } from "react-icons/gi";
-import { CiBarcode } from "react-icons/ci";
+import { CiBarcode, CiSettings } from "react-icons/ci";
 export const links = [
-  // {
-  //   title: "สินค้า",
-  //   name: "Product",
-  //   icon: "",
-  // },
   {
     title: "สต๊อคสินค้า",
     name: "Stock",
@@ -36,5 +31,10 @@ export const links = [
     title: "ปริ้นบาร์โค้ด",
     name: "Barcode",
     icon: <CiBarcode />,
+  },
+  {
+    title: "ตั้งค่า",
+    name: "Setting",
+    icon: <CiSettings />,
   },
 ];

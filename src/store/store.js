@@ -4,6 +4,7 @@ import { create } from "zustand";
 const URL = "http://localhost:8585/";
 const useProduct = create((set) => ({
   products: [],
+  pagelimit: 0,
   search: "",
   fetchProduct: async (search) => {
     const response = await axios.get(
