@@ -10,20 +10,6 @@ const RESOURCES_PATH = app.isPackaged
 const getAssetPath = (...paths) => {
   return path.join(RESOURCES_PATH, ...paths);
 };
-// const {
-//   addDtata,
-//   addproduct,
-//   delproduct,
-//   selectproduct,
-// } = require(getAssetPath("./assets/database.js"));
-
-// const knex = require("knex")({
-//   client: "better-sqlite3",
-//   connection: {
-//     filename: path.join("./assets/dev.db"),
-//   },
-//   useNullAsDefault: true,
-// });
 let win;
 function createWindow() {
   win = new BrowserWindow({
@@ -39,7 +25,7 @@ function createWindow() {
     },
   });
   win.loadFile("index.html");
-  // win.webContents.openDevTools();
+  win.webContents.openDevTools();
   win.maximize();
 }
 if (isDev) {
@@ -60,25 +46,3 @@ app.on("activate", () => {
     // win.webContents.openDevTools();
   }
 });
-
-// const socket = io("http://167.172.69.153");
-// const socketLocal = io("http://localhost:8585");
-
-// axios
-//   .get(`http://localhost:8585/setting`)
-//   .then(({ data }) => {
-//     socket.emit("newUser", data.ShopName);
-//   })
-//   .catch((err) => {
-//     console.log(err.message);
-//   });
-
-// socket.on("price", (data) => {
-//   socketLocal.emit("price", data);
-// });
-// socket.on("addSize", (data) => {
-//   socketLocal.emit("addSize", data);
-// });
-// socket.on("newCloth", (data) => {
-//   socketLocal.emit("newCloth", data);
-// });

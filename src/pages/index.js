@@ -6,3 +6,4 @@ export { default as Dashboard } from "./Dashboard";
 export { default as Barcode } from "./Barcode";
 export { default as Manufacture } from "./Manufacture";
 export { default as Setting } from "./Setting";
+export { default as ExportList } from "./ExportList";

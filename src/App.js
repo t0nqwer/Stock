@@ -1,8 +1,16 @@
 import React, { useEffect, useState } from "react";
 import { Routes, Route, HashRouter, redirect } from "react-router-dom";
 import "./App.css";
-import { Sidebar, ConfirmManufacture } from "./components";
-import { Stock, Import, Export, Barcode, Manufacture, Setting } from "./pages";
+import { Sidebar, ConfirmManufacture, Loading } from "./components";
+import {
+  Stock,
+  Import,
+  Export,
+  Barcode,
+  Manufacture,
+  Setting,
+  ExportList,
+} from "./pages";
 import { Toaster } from "react-hot-toast";
 import useManufacture from "./store/ManfactureStore";
 import useSetting from "./store/appSettingStore";
@@ -15,38 +23,42 @@ const app = () => {
   const ConfirmManu = useManufacture((state) => state.ConfirmManu);
   const setStoreSetting = useSetting((state) => state.setStoreSetting);
   const StoreName = useSetting((state) => state.StoreName);
+  const [load, setLoad] = useState(false);
   //SOCKET
   const [socket, setSocket] = useState(null);
+  const fetch = async () => {
+    const res = await axios.get("http://localhost:8585/checkStock");
+    if (res) {
+      return setLoad(false);
+    } else return setLoad(false);
+  };
 
-  // useEffect(() => {
-  //   console.log(StoreName);
-  //   if (StoreName !== "") {
-  //     const socketconnect = io("http://localhost:7080");
-  //     setSocket(socketconnect);
-  //     socketconnect?.emit("newUser", StoreName);
-  //   }
-  // }, [StoreName]);
   useEffect(() => {
+    setLoad(true);
+    fetch();
     setStoreSetting();
   }, []);
   return (
-    <div className=" bg-primary overflow-hidden">
+    <div className="overflow-hidden bg-primary">
+      {/* {load && <Loading />} */}
       <Toaster />
       {ConfirmManu && <ConfirmManufacture />}
       <HashRouter>
-        <div className="flex relative h-screen overflow-hidden ">
-          <div className="h-full w-48 sidebar bg-primary border-r-1 border-secondary">
+        <div className="relative flex h-screen overflow-hidden ">
+          <div className="w-48 h-full sidebar bg-primary border-r-1 border-secondary">
             <Sidebar />
           </div>
 
-          <div className=" w-full h-full">
+          <div className="w-full h-full ">
             <div className="h-full p-5 ">
               <Routes>
-                <Route path="/" element={<Stock />} />
+                <Route path="/" element={<ExportList />} />
                 <Route path="/Stock" element={<Stock />} />
                 <Route path="/NewProduct" element={<Manufacture />} />
                 <Route path="/Import" element={<Import />} />
-                <Route path="/Export" element={<Export />} />
+                <Route path="/Export" element={<ExportList />} />
+                <Route path="/Export/:id" element={<Export />} />
+                <Route path="/Export/new" element={<Export />} />
                 <Route path="/Barcode" element={<Barcode />} />
                 <Route path="/Setting" element={<Setting />} />
               </Routes>

@@ -165,14 +165,14 @@ const Barcode = () => {
   };
 
   return (
-    <div className=" p-5 w-full h-full flex flex-col bg-third rounded-3xl">
+    <div className="flex flex-col w-full h-full p-5 bg-third rounded-3xl">
       <Header title="ปริ้นบาร์โค้ด" />
-      <div className="flex h-full overflow-hidden gap-3">
+      <div className="flex h-full gap-3 overflow-hidden">
         <div className="w-1/2">
-          <div className="w-full px-5  font-semibold py-3 justify-between  rounded-xl mb-1 flex ">
+          <div className="flex justify-between w-full px-5 py-3 mb-1 font-semibold rounded-xl ">
             <p>รายการสินค้า</p>
             <input
-              className="p-2 bg-light rounded-md text-dark placeholder-primary outline-none border-transparent focus:border-transparent focus:ring-0"
+              className="p-2 border-transparent rounded-md outline-none bg-light text-dark placeholder-primary focus:border-transparent focus:ring-0"
               placeholder="ค้นหา"
               onChange={(e) => {
                 setSearch(e.target.value);
@@ -182,10 +182,10 @@ const Barcode = () => {
           <Barcodelist groupCode={groupCode} groupFabric={groupFabric} />
         </div>
         <div className="w-1/2">
-          <div className="w-full flex justify-end items-center">
+          <div className="flex items-center justify-end w-full">
             <button
               onClick={prindhandle}
-              className=" py-3 bg-highlight hover:bg-light text-white rounded-lg px-5 mb-1"
+              className="px-5 py-3 mb-1 text-white rounded-lg bg-highlight hover:bg-light"
             >
               พิมพ์
             </button>

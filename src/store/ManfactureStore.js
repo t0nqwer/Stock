@@ -16,6 +16,16 @@ const useManufacture = create((set, get) => ({
   },
   setBarcode: (barcode, IsScan) => {
     const state = get();
+    if (state.selectBarcode.some((item) => item.barcode === barcode)) {
+      if (IsScan) {
+        console.log("aa");
+        set((state) => ({
+          ...state,
+          search: "",
+        }));
+      }
+      return state.addqty(barcode);
+    }
 
     const [selectdata] = state.Barcode.filter(
       (item) => item.barcode === barcode
@@ -32,7 +42,6 @@ const useManufacture = create((set, get) => ({
         search: "",
       }));
     }
-
     set((state) => ({
       ...state,
       selectBarcode: [...state.selectBarcode, addqty],

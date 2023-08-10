@@ -5,6 +5,7 @@ import List from "../components/Manufacture/List";
 import Select from "../components/Manufacture/Select";
 
 const Manufacture = () => {
+  const [searchInput, setSearchInput] = useState("");
   const barcodes = useManufacture((state) => state.Barcode);
   const fetchProduct = useManufacture((state) => state.fetchProduct);
   const selectBarcode = useManufacture((state) => state.selectBarcode);
@@ -18,6 +19,9 @@ const Manufacture = () => {
   useEffect(() => {
     fetchProduct();
   }, [fetchProduct]);
+  useEffect(() => {
+    console.log(selectBarcode);
+  }, [selectBarcode]);
   useEffect(() => {
     fetchProduct(search);
   }, [search]);
@@ -36,10 +40,8 @@ const Manufacture = () => {
         group[fabric].push(product);
         return group;
       }, {});
-
       return Object.values(data);
     });
-
     setGroupFabric(groupByFabric);
   }, [barcodes]);
   useEffect(() => {
@@ -52,34 +54,55 @@ const Manufacture = () => {
   //     setBarcode(search);
   //   }
   // });
+  useEffect(() => {
+    const timmer = setInterval(() => {
+      setSearch(searchInput);
+    }, 500);
+    return () => clearInterval(timmer);
+  }, [searchInput]);
   return (
-    <div className=" p-5 w-full h-full flex flex-col bg-third rounded-3xl select-none">
+    <div className="flex flex-col w-full h-full p-5 select-none bg-third rounded-3xl">
       <Header title="เพิ่มสินค้าผลิตใหม่" />
-      <div className="flex h-full overflow-hidden gap-3">
+      <div className="flex h-full gap-3 overflow-hidden">
         <div className="w-1/2">
-          <div className="w-full px-5  font-semibold py-3 justify-between  rounded-xl mb-1 flex ">
+          <div className="flex justify-between w-full px-5 py-3 mb-1 font-semibold rounded-xl ">
             <p>รายการสินค้า</p>
             <input
-              className="p-2 bg-light rounded-md text-dark placeholder-primary outline-none border-transparent focus:border-transparent focus:ring-0"
+              id="searchbar"
+              className="p-2 border-transparent rounded-md outline-none bg-light text-dark placeholder-primary focus:border-transparent focus:ring-0"
               placeholder="ค้นหา"
+              value={searchInput}
               onChange={(e) => {
-                setSearch(e.target.value);
+                setSearchInput(e.target.value);
+              }}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  setBarcode(e.target.value, true);
+                  setSearchInput("");
+                  setSearch("");
+                }
               }}
             />
           </div>
           <List groupFabric={groupFabric} />
         </div>
         <div className="w-1/2">
-          <div className="w-full px-5  font-semibold py-3 justify-between  rounded-xl mb-1 flex ">
+          <div className="flex justify-between w-full px-5 py-3 mb-1 font-semibold rounded-xl ">
             <button
               onClick={removeAll}
-              className=" py-2 bg-light hover:bg-highlight text-white rounded-lg px-5 "
+              className="px-5 py-2 text-white rounded-lg bg-light hover:bg-highlight"
             >
               ลบทั้งหมด
             </button>
+            <p>
+              {selectBarcode.length > 0 &&
+                selectBarcode
+                  ?.map((e) => e?.importqty)
+                  ?.reduce((a, b) => a + b)}
+            </p>
             <button
               onClick={setConfirmManu}
-              className=" py-2 bg-highlight hover:bg-light text-white rounded-lg px-5 "
+              className="px-5 py-2 text-white rounded-lg bg-highlight hover:bg-light"
             >
               เพื่มสินค้าเข้าสต๊อค
             </button>
