@@ -1,5 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { Routes, Route, HashRouter, redirect } from "react-router-dom";
+import {
+  Routes,
+  Route,
+  HashRouter,
+  redirect,
+  Navigate,
+} from "react-router-dom";
 import "./App.css";
 import { Sidebar, ConfirmManufacture, Loading } from "./components";
 import {
@@ -52,7 +58,7 @@ const app = () => {
           <div className="w-full h-full ">
             <div className="h-full p-5 ">
               <Routes>
-                <Route path="/" element={<ExportList />} />
+                <Route path="/" element={<Navigate to={"/Stock"} />} />
                 <Route path="/Stock" element={<Stock />} />
                 <Route path="/NewProduct" element={<Manufacture />} />
                 <Route path="/Import" element={<Import />} />

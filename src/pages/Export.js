@@ -21,6 +21,7 @@ const Export = () => {
   const fetchProduct = useExportStore((state) => state.fetchProduct);
   const barcodes = useExportStore((state) => state.Barcode);
   const getID = useExportStore((state) => state.getID);
+  const transferProduct = useExportStore((state) => state.transferProduct);
 
   useEffect(() => {
     setSuccess(false);
@@ -81,7 +82,10 @@ const Export = () => {
               >
                 บันทึก
               </button>
-              <button className="px-5 py-2 text-white rounded-lg hover:bg-light bg-highlight">
+              <button
+                className="px-5 py-2 text-white rounded-lg hover:bg-light bg-highlight"
+                onClick={() => transferProduct()}
+              >
                 ส่งสินค้า
               </button>
             </div>

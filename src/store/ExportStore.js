@@ -205,6 +205,61 @@ const useExportStore = create((set, get) => ({
       notify(error.response.data.message);
     }
   },
+  transferProduct: async (barcode) => {
+    try {
+      const state = get();
+      if (state.selectStore === "") return notify("โปรดเลือกร้าน");
+      if (state.selectBarcode.length === 0) return notify("โปรดเลือกสินค้า");
+      if (state.EditID === "new") {
+        console.log("new");
+        const { data } = await axios.post(`${URL}action/saveexport/transfer`, {
+          store: state.selectStore,
+          product: state.selectBarcode.map((item) => ({
+            barcode: item.barcode,
+            importqty: item.importqty,
+          })),
+        });
+        set((state) => ({
+          ...state,
+          Barcode: [],
+          selectBarcode: [],
+          search: "",
+          Loading: false,
+          Success: true,
+          storeList: [],
+          selectStore: "",
+          EditID: "",
+          getID: false,
+        }));
+      } else {
+        console.log("old");
+        const { data } = await axios.post(
+          `${URL}action/updateaction/transfer`,
+          {
+            id: state.EditID,
+            product: state.selectBarcode.map((item) => ({
+              barcode: item.barcode,
+              importqty: item.importqty,
+            })),
+          }
+        );
+        set((state) => ({
+          ...state,
+          Barcode: [],
+          selectBarcode: [],
+          search: "",
+          Loading: false,
+          Success: true,
+          storeList: [],
+          selectStore: "",
+          EditID: "",
+          getID: false,
+        }));
+      }
+    } catch (error) {
+      notify(error.response.data.message);
+    }
+  },
 }));
 
 export default useExportStore;

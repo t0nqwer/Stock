@@ -3,9 +3,11 @@ import { Header } from "../components";
 import { FaLongArrowAltRight } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import useExportListStore from "../store/ExportListStore";
+import { notify } from "../contexts/Notification";
 const ExportList = () => {
   const list = useExportListStore((state) => state.list);
   const fetchList = useExportListStore((state) => state.fetchList);
+  const deleteExport = useExportListStore((state) => state.deleteExport);
 
   useEffect(() => {
     fetchList();
@@ -29,8 +31,10 @@ const ExportList = () => {
         <div className="mt-2">
           {list.length > 0 &&
             list.map((item, index) => (
-              <div className="flex items-center w-full px-10 py-3 mb-1 space-x-20 text-base font-semibold bg-gray-400 rounded-xl ">
-                {" "}
+              <div
+                key={item.id}
+                className="flex items-center w-full px-10 py-3 mb-1 space-x-20 text-base font-semibold bg-gray-400 rounded-xl "
+              >
                 <div className="flex items-center w-1/9">
                   <div
                     className={`w-3 h-3 mr-2 ${
@@ -69,8 +73,8 @@ const ExportList = () => {
                   {item.status === "draft" && (
                     <>
                       <button
-                        className="px-3 py-1 text-white bg-red-600 rounded-lg hover:bg-light disabled:bg-light"
-                        disabled
+                        className="px-3 py-1 text-white bg-red-600 rounded-lg hover:bg-light "
+                        onClick={() => deleteExport(item.id)}
                       >
                         ลบ
                       </button>
@@ -85,9 +89,15 @@ const ExportList = () => {
                     <>
                       <button
                         className="px-3 py-1 text-white bg-red-600 rounded-lg hover:bg-light"
-                        disabled
+                        onClick={() => deleteExport(item.id)}
                       >
                         ลบ
+                      </button>
+                      <button
+                        className="px-3 py-1 text-white rounded-lg bg-highlight hover:bg-light"
+                        onClick={() => notify("ยังไม่สามารถใช้งานได้")}
+                      >
+                        ดูข้อมูล
                       </button>
                     </>
                   )}

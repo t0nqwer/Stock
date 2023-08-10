@@ -13,6 +13,14 @@ const useExportListStore = create((set, get) => ({
       notify(error.response.data.message);
     }
   },
+  deleteExport: async (id) => {
+    try {
+      const { data } = await axios.post(`${URL}action/deleteaction`, { id });
+      set((state) => ({ ...state, list: data }));
+    } catch (error) {
+      notify(error.response.data.message);
+    }
+  },
 }));
 
 export default useExportListStore;
