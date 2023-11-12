@@ -7,3 +7,4 @@ export { default as Barcode } from "./Barcode";
 export { default as Manufacture } from "./Manufacture";
 export { default as Setting } from "./Setting";
 export { default as ExportList } from "./ExportList";
+export { default as AddExport } from "./AddExport";

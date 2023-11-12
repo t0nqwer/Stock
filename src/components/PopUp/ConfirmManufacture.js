@@ -18,10 +18,11 @@ const ConfirmManufacture = () => {
   const [groupFabric, setGroupFabric] = useState([]);
 
   useEffect(() => {
+    console.log(selectBarcode);
     const groupByCategory = selectBarcode.reduce((group, product) => {
-      const { code } = product;
-      group[code] = group[code] ?? [];
-      group[code].push(product);
+      const { design } = product;
+      group[design] = group[design] ?? [];
+      group[design].push(product);
       return group;
     }, {});
     const arr = Object.values(groupByCategory);
@@ -43,66 +44,63 @@ const ConfirmManufacture = () => {
     prindhandle(selectBarcode, BarcodePath);
   };
   return (
-    <div className=" fixed w-full h-full  bg-gray-800 z-40 bg-opacity-30 backdrop-blur-sm flex justify-center items-center select-none ">
+    <div className="fixed z-40 flex items-center justify-center w-full h-full bg-gray-800 select-none bg-opacity-30 backdrop-blur-sm">
       {Loading && (
-        <div className=" w-full h-full fixed z-50 backdrop-blur-sm flex justify-center items-center select-none ">
-          <div
-            class="w-12 h-12 rounded-full animate-spin
- border-8 border-solid border-highlight border-t-transparent"
-          ></div>
+        <div className="fixed z-50 flex items-center justify-center w-full h-full select-none backdrop-blur-sm">
+          <div className="w-12 h-12 border-8 border-solid rounded-full animate-spin border-highlight border-t-transparent"></div>
         </div>
       )}
-      <div className="h-3/4 w-3/4 p-5 bg-third relative flex flex-col justify-between items-center">
+      <div className="relative flex flex-col items-center justify-between w-3/4 p-5 h-3/4 bg-third">
         {!Success && (
           <div
-            className=" absolute top-3 right-3 text-highlight rounded-full p-2 hover:bg-highlight hover:text-white cursor-pointer"
+            className="absolute p-2 rounded-full cursor-pointer top-3 right-3 text-highlight hover:bg-highlight hover:text-white"
             onClick={setConfirmManu}
           >
             <IoMdClose />
           </div>
         )}
         {!Success && (
-          <div className=" text-xl text-highlight w-full mb-2 text-center">
+          <div className="w-full mb-2 text-xl text-center text-highlight">
             ตรวจสอบรายการสินค้า
           </div>
         )}
         {Success && (
-          <div className=" text-xl text-highlight w-full mb-2 text-center">
+          <div className="w-full mb-2 text-xl text-center text-highlight">
             เพื่มสินค้าเข้าสต๊อคเรียบร้อยแล้ว
           </div>
         )}
 
-        <div className=" w-full h-full overflow-scroll scrollbar-hide rounded-lg pb-20 ">
+        <div className="w-full h-full pb-20 overflow-scroll rounded-lg scrollbar-hide">
           {groupFabric.map((e, i) => {
-            if (e.flat()[0].cloth)
+            if (e.flat()[0].design)
               return (
                 <div
-                  key={e[0].flat()[0].code}
-                  className="w-full px-5 text-base font-semibold py-3 bg-gray-400 rounded-xl mb-1 "
+                  key={e[0].flat()[0].design}
+                  className="w-full px-5 py-3 mb-1 text-base font-semibold bg-gray-400 rounded-xl "
                 >
                   <div>
-                    {e[0].flat()[0].code.toUpperCase()}/
-                    <span className=" text-base font-normal">
+                    {e[0].flat()[0].design.toUpperCase()}/
+                    <span className="text-base font-normal ">
                       {e[0].flat()[0].name}
                     </span>
                   </div>
                   <div className="w-full ">
                     {e.map((a) => (
                       <div
-                        key={`${e[0].flat()[0].code}${a[0].fabric}`}
-                        className="px-5 w-full "
+                        key={`${e[0].flat()[0].design}${a[0].fabric}`}
+                        className="w-full px-5 "
                       >
-                        <div className="flex justify-between  mt-1  border-b-1">
+                        <div className="flex justify-between mt-1 border-b-1">
                           <p>{a[0].fabric}</p>
                           <p>{a[0].price} ฿</p>
                         </div>
                         <div className="w-full mt-1">
                           {a.map((b) => (
                             <div
-                              key={b.barcode}
-                              className="flex w-full justify-between pl-3 text-base font-normal"
+                              key={b._id}
+                              className="flex justify-between w-full pl-3 text-base font-normal"
                             >
-                              <p>{b.barcode}</p>
+                              <p>{b._id}</p>
                               <p>{b.size}</p>
                               <p>{b.importqty}</p>
                             </div>
@@ -115,14 +113,14 @@ const ConfirmManufacture = () => {
               );
           })}
           {groupFabric.map((e, i) => {
-            if (!e.flat()[0].cloth)
+            if (!e.flat()[0].design)
               return e.flat().map((a) => (
                 <div
-                  key={a.barcode}
-                  className="w-full px-5  text-lg font-normal py-2 bg-gray-400 border  rounded-xl mb-1 "
+                  key={a._id}
+                  className="w-full px-5 py-2 mb-1 text-lg font-normal bg-gray-400 border rounded-xl "
                 >
                   <div className="flex justify-between">
-                    <div className=" w-1/6 font-semibold">{a.barcode}</div>
+                    <div className="w-1/6 font-semibold ">{a._id}</div>
                     <div className="w-3/6 font-normal">{a.name}</div>
                     <div className="w-1/6 text-center">{a.price}</div>
                     <p>{a.importqty}</p>
@@ -135,7 +133,7 @@ const ConfirmManufacture = () => {
           {!Success && (
             <button
               onClick={addStock}
-              className=" py-2 bg-highlight hover:bg-light text-white rounded-lg px-5 "
+              className="px-5 py-2 text-white rounded-lg bg-highlight hover:bg-light"
             >
               เพื่มสินค้าเข้าสต๊อค
             </button>
@@ -143,7 +141,7 @@ const ConfirmManufacture = () => {
           {Success && (
             <button
               onClick={print}
-              className=" py-2 bg-highlight hover:bg-light text-white rounded-lg px-5 "
+              className="px-5 py-2 text-white rounded-lg bg-highlight hover:bg-light"
             >
               พิมพ์บาร์โค้ด
             </button>
@@ -151,7 +149,7 @@ const ConfirmManufacture = () => {
           {Success && (
             <button
               onClick={removeAll}
-              className=" py-2 bg-highlight hover:bg-light text-white rounded-lg px-5 "
+              className="px-5 py-2 text-white rounded-lg bg-highlight hover:bg-light"
             >
               เสร็จสิ้น
             </button>

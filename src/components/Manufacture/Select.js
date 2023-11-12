@@ -13,26 +13,26 @@ const Select = () => {
     <div className="w-full h-full pb-10 overflow-scroll">
       <div className="">
         {selectBarcode.map((e) => {
-          if (e.cloth)
+          if (e.design)
             return (
               <div
-                key={e.barcode}
-                className="w-full px-5 text-base  bg-gray-400 rounded-xl mb-1 flex items-center justify-between text-center"
+                key={e._id}
+                className="flex items-center justify-between w-full px-5 mb-1 text-base text-center bg-gray-400 rounded-xl"
               >
                 <div
-                  className=" w-12 py-1 px-3 text-base bg-primary my-1 rounded-md text-white cursor-pointer hover:bg-light"
-                  onClick={() => removeSelect(e.barcode)}
+                  className="w-12 px-3 py-1 my-1 text-base text-white rounded-md cursor-pointer bg-primary hover:bg-light"
+                  onClick={() => removeSelect(e._id)}
                 >
                   ลบ
                 </div>
-                <div className="w-1/6">{e.barcode}</div>
-                <div className="w-1/6">{e.code}</div>
-                <div className="truncate w-2/6">{e.fabric}</div>
+                <div className="w-1/6">{e._id}</div>
+                <div className="w-1/6">{e.design}</div>
+                <div className="w-2/6 truncate">{e.fabric}</div>
                 <div className="w-1/6">{e.size}</div>
-                <div className="flex space-x-2 items-center  w-1/6 justify-around ">
+                <div className="flex items-center justify-around w-1/6 space-x-2 ">
                   <div
-                    id={e.barcode}
-                    className=" font-bold text-lg py-2 px-3 my-1 bg-secondary rounded-md text-white cursor-pointer hover:bg-light   "
+                    id={e._id}
+                    className="px-3 py-2 my-1 text-lg font-bold text-white rounded-md cursor-pointer bg-secondary hover:bg-light"
                     onClick={(a) => removeqty(a.currentTarget.id)}
                   >
                     -
@@ -40,8 +40,8 @@ const Select = () => {
 
                   <div>{e.importqty}</div>
                   <div
-                    id={e.barcode}
-                    className=" font-bold text-lg py-2 px-3 my-1 bg-highlight rounded-md text-white cursor-pointer hover:bg-light"
+                    id={e._id}
+                    className="px-3 py-2 my-1 text-lg font-bold text-white rounded-md cursor-pointer bg-highlight hover:bg-light"
                     onClick={(a) => addqty(a.currentTarget.id)}
                   >
                     +
@@ -49,25 +49,25 @@ const Select = () => {
                 </div>
               </div>
             );
-          if (!e.cloth)
+          if (!e.design)
             return (
               <div
-                key={e.barcode}
-                className="w-full px-5 text-base py-1 bg-gray-400 rounded-xl mb-1 flex items-center justify-between"
+                key={e._id}
+                className="flex items-center justify-between w-full px-5 py-1 mb-1 text-base bg-gray-400 rounded-xl"
               >
                 <p
-                  className=" py-2 px-3 text-base bg-primary my-1 rounded-md text-white cursor-pointer hover:bg-light"
-                  onClick={() => removeSelect(e.barcode)}
+                  className="px-3 py-2 my-1 text-base text-white rounded-md cursor-pointer bg-primary hover:bg-light"
+                  onClick={() => removeSelect(e._id)}
                 >
                   ลบ
                 </p>
-                <div className="w-1/6">{e.barcode}</div>
+                <div className="w-1/6">{e._id}</div>
                 <div className="w-1/6">{e.name}</div>
-                <div className="truncate w-2/6">{e.brand}</div>
-                <div className="flex space-x-2 items-center  w-1/6 justify-around ">
+                <div className="w-2/6 truncate">{e.brand}</div>
+                <div className="flex items-center justify-around w-1/6 space-x-2 ">
                   <div
-                    id={e.barcode}
-                    className=" font-bold text-lg py-2 px-3 my-1 bg-secondary rounded-md text-white cursor-pointer hover:bg-light   "
+                    id={e._id}
+                    className="px-3 py-2 my-1 text-lg font-bold text-white rounded-md cursor-pointer bg-secondary hover:bg-light"
                     onClick={(a) => removeqty(a.currentTarget.id)}
                   >
                     -
@@ -75,8 +75,8 @@ const Select = () => {
 
                   <div>{e.importqty}</div>
                   <div
-                    id={e.barcode}
-                    className=" font-bold text-lg py-2 px-3 my-1 bg-highlight rounded-md text-white cursor-pointer hover:bg-light"
+                    id={e._id}
+                    className="px-3 py-2 my-1 text-lg font-bold text-white rounded-md cursor-pointer bg-highlight hover:bg-light"
                     onClick={(a) => addqty(a.currentTarget.id)}
                   >
                     +

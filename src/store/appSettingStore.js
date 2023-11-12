@@ -6,22 +6,22 @@ const useSetting = create((set, get) => ({
   StoreName: "",
   BarcodePath: "",
   setBarcodePath: async (path) => {
-    const { data } = await axios.post(`${URL}setting/set`, { path });
+    const { data } = await axios.post(`${URL}setting`, { path });
     console.log(data);
     set((state) => ({
       ...state,
-      BarcodePath: data.BarcodeFilePath,
+      BarcodePath: data.barcodeLocation,
     }));
   },
 
   setStoreSetting: async () => {
     const { data } = await axios.get(`${URL}setting`);
     console.log(data);
-    if (data.BarcodeFilePath) {
+    if (data.barcodeLocation) {
       set((state) => ({
         ...state,
-        BarcodePath: data.BarcodeFilePath,
-        StoreName: data.ShopName,
+        BarcodePath: data.barcodeLocation,
+        StoreName: data.warehouseName,
       }));
     }
   },

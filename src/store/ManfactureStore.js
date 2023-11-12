@@ -16,19 +16,17 @@ const useManufacture = create((set, get) => ({
   },
   setBarcode: (barcode, IsScan) => {
     const state = get();
-    if (state.selectBarcode.some((item) => item.barcode === barcode)) {
-      if (IsScan) {
-        console.log("aa");
-        set((state) => ({
-          ...state,
-          search: "",
-        }));
-      }
+    if (state.selectBarcode.some((item) => item._id === barcode)) {
       return state.addqty(barcode);
     }
 
     const [selectdata] = state.Barcode.filter(
-      (item) => item.barcode === barcode
+      (item) => item._id.toUpperCase() === barcode.toUpperCase()
+    );
+    console.log(
+      selectdata,
+      state.Barcode[0]._id.toUpperCase(),
+      barcode.toUpperCase()
     );
     if (!selectdata) return;
     const unselectdata = state.Barcode.filter(
@@ -47,38 +45,31 @@ const useManufacture = create((set, get) => ({
       selectBarcode: [...state.selectBarcode, addqty],
     }));
   },
-  fetchProduct: async (search) => {
+  fetchProduct: async (barcode, name, code) => {
     const response = await axios.get(
-      `${URL}listproducts?search=${search ? search : ""}`
+      `${URL}stock?price=&barcode=${barcode}&name=${name}&code=${code}`
     );
     const state = get();
 
-    const product = response.data.filter(
-      (n) => !state.selectBarcode.some((n2) => n.barcode == n2.barcode)
-    );
+    // const product = response.data.filter(
+    //   (n) => !state.selectBarcode.some((n2) => n.barcode == n2.barcode)
+    // );
     set((state) => ({
       ...state,
-      Barcode: product,
+      Barcode: response.data,
     }));
   },
   removeSelect: async (barcode) => {
     const state = get();
-    const response = await axios.get(
-      `${URL}listproducts?search=${state.search ? state.search : ""}`
-    );
+
     const newselect = state.selectBarcode
       .filter((item) => item.barcode !== barcode)
       .map((item) => item.barcode);
-    const data = response.data.filter(
-      (item) => !newselect.includes(item.barcode)
-    );
-    console.log(newselect);
+
+    console.log(state.selectBarcode, barcode);
     set((state) => ({
       ...state,
-      Barcode: data,
-      selectBarcode: state.selectBarcode.filter(
-        (item) => item.barcode !== barcode
-      ),
+      selectBarcode: state.selectBarcode.filter((item) => item._id !== barcode),
     }));
   },
   changePrintQty: (barcodee, qty) => {
@@ -111,7 +102,7 @@ const useManufacture = create((set, get) => ({
   addqty: (barcode) => {
     const state = get();
     const newdata = state.selectBarcode.map((item) => {
-      if (item.barcode == barcode) {
+      if (item._id == barcode) {
         const addqty = { ...item, importqty: +item.importqty + 1 };
         return addqty;
       }
@@ -125,7 +116,7 @@ const useManufacture = create((set, get) => ({
   removeqty: (barcode) => {
     const state = get();
     const newdata = state.selectBarcode.map((item) => {
-      if (item.barcode == barcode) {
+      if (item._id == barcode) {
         const addqty = { ...item, importqty: +item.importqty - 1 };
         return addqty;
       }
@@ -133,9 +124,9 @@ const useManufacture = create((set, get) => ({
     });
     const inputdata = newdata.filter((item) => item.importqty > 0);
     const removedata = newdata.filter((item) => item.importqty === 0);
-    if (removedata) {
-      state.fetchProduct(state.search);
-    }
+    // if (removedata) {
+    //   state.fetchProduct(state.search);
+    // }
     set((state) => ({
       ...state,
       selectBarcode: inputdata,
@@ -144,7 +135,7 @@ const useManufacture = create((set, get) => ({
   removeAll: () => {
     set((state) => ({
       ...state,
-      Barcode: [],
+      // Barcode: [],
       selectBarcode: [],
       ConfirmManu: false,
       Loading: false,
@@ -158,7 +149,7 @@ const useManufacture = create((set, get) => ({
     }));
     const state = get();
     try {
-      const response = await axios.post(`${URL}stockin`, state.selectBarcode);
+      const response = await axios.post(`${URL}stock`, state.selectBarcode);
       console.log(response.data);
       set((state) => ({
         ...state,

@@ -7,25 +7,24 @@ import useSetting from "../store/appSettingStore";
 import { notify } from "../contexts/Notification";
 
 const Barcode = () => {
+  const [search, setSearch] = useState({ name: "", code: "", barcode: "" });
+  const [searchInput, setSearchInput] = useState("");
+  const setBarcode = usePrintBarcode((state) => state.setBarcode);
   const barcodes = usePrintBarcode((state) => state.Barcode);
   const fetchProduct = usePrintBarcode((state) => state.fetchProduct);
   const selectBarcode = usePrintBarcode((state) => state.selectBarcode);
-  const setSearch = usePrintBarcode((state) => state.setSearch);
-  const search = usePrintBarcode((state) => state.search);
   const BarcodePath = useSetting((state) => state.BarcodePath);
   const [groupCode, setGroupCode] = useState([]);
   const [groupFabric, setGroupFabric] = useState([]);
   useEffect(() => {
-    fetchProduct();
-  }, [fetchProduct]);
-  useEffect(() => {
-    fetchProduct(search);
-  }, [search]);
+    fetchProduct(search.barcode, search.name, search.code);
+  }, [fetchProduct, search]);
+
   useEffect(() => {
     const groupByCategory = barcodes.reduce((group, product) => {
-      const { code } = product;
-      group[code] = group[code] ?? [];
-      group[code].push(product);
+      const { design } = product;
+      group[design] = group[design] ?? [];
+      group[design].push(product);
       return group;
     }, {});
     const arr = Object.values(groupByCategory);
@@ -42,9 +41,18 @@ const Barcode = () => {
     setGroupCode(arr);
     setGroupFabric(groupByFabric);
   }, [barcodes]);
+
   useEffect(() => {
-    console.log(selectBarcode);
-  }, [selectBarcode]);
+    const timmer = setInterval(() => {
+      setSearch({ ...search, barcode: searchInput });
+    }, 500);
+    if (searchInput === search.barcode) {
+      clearInterval(timmer);
+    }
+    return () => {
+      clearInterval(timmer);
+    };
+  }, [searchInput, search.barcode]);
   const prindhandle = () => {
     if (selectBarcode.length === 0) return notify("โปรดเลือกสินค้า");
     if (selectBarcode.filter((item) => item.printqty === 0).length !== 0)
@@ -114,27 +122,27 @@ const Barcode = () => {
       const print = e.printqty;
       let i;
       for (i = 0; i < print; i++) {
-        if (e.cloth)
+        if (e.design)
           myWindow.document.write(`<div class="page">
           <div style="display: flex; justify-content: space-between; ">
-          <div >${e.code.toUpperCase()}-${e.size}</div>
+          <div >${e.design.toUpperCase()}-${e.size}</div>
           <div>${e.price}</div>
           </div>
           <div style="font-size: 8pt;   ">${e.fabric}</div>
-          <img id="${e.barcode}${i}" xmlns="http://www.w3.org/2000/svg"
+          <img id="${e._id}${i}" xmlns="http://www.w3.org/2000/svg"
           style="object-fit: contain;"  width="100%"></img>
-          <div style="font-size: 8pt; display: flex; justify-content: center;"><div>${e.barcode.toUpperCase()}</div></div>
+          <div style="font-size: 8pt; display: flex; justify-content: center;"><div>${e._id.toUpperCase()}</div></div>
           </div>`);
-        if (!e.cloth)
+        if (!e.design)
           myWindow.document.write(`<div class="page">
         <div style="display: flex; justify-content: space-between; line-height: 1em;   font-size: 9pt;">
         <div >${e.name}</div>
         <div>${e.price}</div>
         </div>
         <div style="font-size: 8pt;   ">${e.brand}</div>
-        <img id="${e.barcode}${i}" xmlns="http://www.w3.org/2000/svg"
+        <img id="${e._id}${i}" xmlns="http://www.w3.org/2000/svg"
         style="object-fit: contain;"  width="100%"></img>
-        <div style="font-size: 8pt; display: flex; justify-content: center;"><div>${e.barcode.toUpperCase()}</div></div>
+        <div style="font-size: 8pt; display: flex; justify-content: center;"><div>${e._id.toUpperCase()}</div></div>
         </div>`);
       }
     });
@@ -146,7 +154,7 @@ const Barcode = () => {
       let i;
       for (i = 0; i < print; i++) {
         myWindow.document.write(
-          `JsBarcode("#${e.barcode}${i}", "${e.barcode}",{
+          `JsBarcode("#${e._id}${i}", "${e._id}",{
             format: "code128",
             width: 1,
             height: 35,
@@ -163,21 +171,78 @@ const Barcode = () => {
     });
     myWindow.document.write(`</script></body></html>`);
   };
+  const nameHandler = (e) => {
+    if (e.target.value === "") {
+      setSearch((state) => ({
+        ...state,
+        name: "",
+      }));
+    }
+    setSearch((state) => ({
+      ...state,
+      name: e.target.value,
+    }));
+  };
+  const codeHandler = (e) => {
+    if (e.target.value === "") {
+      setSearch((state) => ({
+        ...state,
+        code: "",
+      }));
+    }
+    setSearch((state) => ({
+      ...state,
+      code: e.target.value,
+    }));
+  };
 
   return (
     <div className="flex flex-col w-full h-full p-5 bg-third rounded-3xl">
       <Header title="ปริ้นบาร์โค้ด" />
       <div className="flex h-full gap-3 overflow-hidden">
         <div className="w-1/2">
-          <div className="flex justify-between w-full px-5 py-3 mb-1 font-semibold rounded-xl ">
-            <p>รายการสินค้า</p>
-            <input
-              className="p-2 border-transparent rounded-md outline-none bg-light text-dark placeholder-primary focus:border-transparent focus:ring-0"
-              placeholder="ค้นหา"
-              onChange={(e) => {
-                setSearch(e.target.value);
-              }}
-            />
+          <div className="flex items-end justify-around mb-1 space-x-2">
+            <div className="select-none">
+              <p className="text-center text-dark">ค้นหาชื่อ</p>
+              <input
+                className="w-40 px-4 py-2 font-semibold border-transparent rounded-md outline-none bg-light text-dark placeholder-highlight focus:border-transparent focus:ring-0"
+                placeholder="ชื่อสินค้า"
+                type="text"
+                onChange={nameHandler}
+                value={search.name}
+              />
+            </div>
+            <div className="select-none">
+              <p className="text-center text-dark">ค้นหารหัสเสื้อผ้า</p>
+              <input
+                className="w-40 px-4 py-2 font-semibold border-transparent rounded-md outline-none bg-light text-dark placeholder-highlight focus:border-transparent focus:ring-0"
+                placeholder="รหัสเสื้อผ้า"
+                type="text"
+                onChange={codeHandler}
+                value={search.code}
+              />
+            </div>
+          </div>
+          <div className="flex justify-center">
+            <div>
+              <p className="text-center text-dark">
+                ค้นหาบาร์โค้ด/สแกนบาร์โค้ด
+              </p>
+              <input
+                className="px-4 py-2 mx-auto font-semibold border-transparent rounded-md outline-none bg-light text-dark placeholder-highlight focus:border-transparent focus:ring-0"
+                placeholder="Barcode"
+                onChange={(e) => {
+                  setSearchInput(e.target.value);
+                }}
+                value={searchInput}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") {
+                    setBarcode(searchInput, true);
+                    setSearchInput("");
+                  }
+                }}
+              />
+            </div>
           </div>
           <Barcodelist groupCode={groupCode} groupFabric={groupFabric} />
         </div>

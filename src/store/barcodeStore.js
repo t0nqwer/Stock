@@ -12,12 +12,8 @@ const usePrintBarcode = create((set, get) => ({
   setBarcode: (barcode) => {
     const state = get();
 
-    const [selectdata] = state.Barcode.filter(
-      (item) => item.barcode === barcode
-    );
-    const unselectdata = state.Barcode.filter(
-      (item) => item.barcode !== barcode
-    );
+    const [selectdata] = state.Barcode.filter((item) => item._id === barcode);
+    const unselectdata = state.Barcode.filter((item) => item._id !== barcode);
     const addqty = { ...selectdata, printqty: 0 };
 
     set((state) => ({
@@ -29,9 +25,9 @@ const usePrintBarcode = create((set, get) => ({
       selectBarcode: [...state.selectBarcode, addqty],
     }));
   },
-  fetchProduct: async (search) => {
+  fetchProduct: async (barcode, name, code) => {
     const response = await axios.get(
-      `${URL}listproducts?search=${search ? search : ""}`
+      `${URL}stock?price=&barcode=${barcode}&name=${name}&code=${code}`
     );
     set((state) => ({
       ...state,
@@ -40,39 +36,24 @@ const usePrintBarcode = create((set, get) => ({
   },
   removeSelect: async (barcode) => {
     const state = get();
-    const response = await axios.get(
-      `${URL}listproducts?search=${state.search ? state.search : ""}`
-    );
+    const response = await axios.get(`${URL}stock?price=&barcode=&name=&code=`);
     const newselect = state.selectBarcode
-      .filter((item) => item.barcode !== barcode)
-      .map((item) => item.barcode);
-    const data = response.data.filter(
-      (item) => !newselect.includes(item.barcode)
-    );
-    console.log(newselect);
+      .filter((item) => item._id !== barcode)
+      .map((item) => item._id);
+    const data = response.data.filter((item) => !newselect.includes(item._id));
+
     set((state) => ({
       ...state,
       Barcode: data,
-      selectBarcode: state.selectBarcode.filter(
-        (item) => item.barcode !== barcode
-      ),
+      selectBarcode: state.selectBarcode.filter((item) => item._id !== barcode),
     }));
   },
   changePrintQty: (barcodee, qty) => {
     const state = get();
-    const newdata = state.selectBarcode.map((item) => {
-      if (item.barcode == barcodee) {
-        const addqty = { ...item, printqty: +qty };
-        console.log(addqty);
-        return addqty;
-      }
-      return item;
-    });
-    console.log(newdata);
     set((state) => ({
       ...state,
       selectBarcode: state.selectBarcode.map((item) => {
-        if (item.barcode == barcodee) {
+        if (item._id == barcodee) {
           const addqty = { ...item, printqty: +qty };
           console.log(addqty);
           return addqty;

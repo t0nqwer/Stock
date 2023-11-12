@@ -16,6 +16,7 @@ import {
   Manufacture,
   Setting,
   ExportList,
+  AddExport,
 } from "./pages";
 import { Toaster } from "react-hot-toast";
 import useManufacture from "./store/ManfactureStore";
@@ -32,16 +33,16 @@ const app = () => {
   const [load, setLoad] = useState(false);
   //SOCKET
   const [socket, setSocket] = useState(null);
-  const fetch = async () => {
-    const res = await axios.get("http://localhost:8585/checkStock");
-    if (res) {
-      return setLoad(false);
-    } else return setLoad(false);
-  };
+  // const fetch = async () => {
+  //   const res = await axios.get("http://localhost:8585/checkStock");
+  //   if (res) {
+  //     return setLoad(false);
+  //   } else return setLoad(false);
+  // };
 
   useEffect(() => {
     setLoad(true);
-    fetch();
+    // fetch();
     setStoreSetting();
   }, []);
   return (
@@ -56,15 +57,15 @@ const app = () => {
           </div>
 
           <div className="w-full h-full ">
-            <div className="h-full p-5 ">
+            <div className="h-full p-3 ">
               <Routes>
                 <Route path="/" element={<Navigate to={"/Stock"} />} />
                 <Route path="/Stock" element={<Stock />} />
                 <Route path="/NewProduct" element={<Manufacture />} />
                 <Route path="/Import" element={<Import />} />
                 <Route path="/Export" element={<ExportList />} />
-                <Route path="/Export/:id" element={<Export />} />
-                <Route path="/Export/new" element={<Export />} />
+                <Route path="/Export/:id" element={<AddExport />} />
+                <Route path="/Export/new" element={<AddExport />} />
                 <Route path="/Barcode" element={<Barcode />} />
                 <Route path="/Setting" element={<Setting />} />
               </Routes>

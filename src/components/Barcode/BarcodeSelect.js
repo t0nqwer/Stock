@@ -6,56 +6,58 @@ const BarcodeSelect = () => {
   const changePrintQty = usePrintBarcode((state) => state.changePrintQty);
   const printCheck = usePrintBarcode((state) => state.printCheck);
   const removeSelect = usePrintBarcode((state) => state.removeSelect);
-
+  console.log(selectBarcode);
   return (
     <div className="w-full h-full pb-10 overflow-scroll">
       <div className="">
         {selectBarcode.map((e) => {
-          if (e.cloth)
+          if (e.design)
             return (
               <div
-                key={e.barcode}
-                className="w-full px-5 text-base py-1S bg-gray-400 rounded-xl mb-1 flex items-center justify-between"
+                key={e._id}
+                className="grid items-center w-full grid-cols-10 px-5 mb-1 text-sm bg-gray-400 py-1S rounded-xl"
               >
                 <p
-                  className=" py-2 px-3 text-base bg-primary my-1 rounded-md text-white cursor-pointer hover:bg-light"
-                  onClick={() => removeSelect(e.barcode)}
+                  className="px-3 py-2 my-1 text-base text-center text-white rounded-md cursor-pointer bg-primary hover:bg-light"
+                  onClick={() => removeSelect(e._id)}
                 >
                   ลบ
                 </p>
-                <div>{e.barcode}</div>
-                <div>{e.code}</div>
-                <div className="truncate">{e.fabric}</div>
-                <div>{e.size}</div>
-                <div>
+                <div className="col-span-2 text-center ">{e._id}</div>
+                <div className="text-center ">{e.design}</div>
+                <div className="col-span-4 truncate">{e.fabric}</div>
+                <div className="text-center ">{e.size}</div>
+                <div className="w-full">
                   <input
                     type="number"
-                    id={e.barcode}
-                    onChange={(p) => changePrintQty(e.barcode, p.target.value)}
+                    className="w-full p-1 text-center "
+                    id={e._id}
+                    onChange={(p) => changePrintQty(e._id, p.target.value)}
                   ></input>
                 </div>
               </div>
             );
-          if (!e.cloth)
+          if (!e.design)
             return (
               <div
-                key={e.barcode}
-                className="w-full px-5 text-base py-1S bg-gray-400 rounded-xl mb-1 flex items-center justify-between"
+                key={e._id}
+                className="grid items-center w-full grid-cols-10 px-5 mb-1 text-sm bg-gray-400 py-1S rounded-xl"
               >
                 <p
-                  className=" py-2 px-3 text-base bg-primary my-1 rounded-md text-white cursor-pointer hover:bg-light"
-                  onClick={() => removeSelect(e.barcode)}
+                  className="px-3 py-2 my-1 text-base text-center text-white rounded-md cursor-pointer bg-primary hover:bg-light"
+                  onClick={() => removeSelect(e._id)}
                 >
                   ลบ
                 </p>
-                <div className="w-1/6">{e.barcode}</div>
-                <div className="w-1/6">{e.name}</div>
-                <div className="truncate w-2/6">{e.brand}</div>
-                <div>
+                <div className="col-span-2 text-center ">{e._id}</div>
+                <div className="col-span-4 text-center">{e.name}</div>
+                <div className="col-span-2 text-center">{e.brand}</div>
+                <div className="w-full">
                   <input
                     type="number"
-                    id={e.barcode}
-                    onChange={(p) => changePrintQty(e.barcode, p.target.value)}
+                    className="w-full p-1 text-center "
+                    id={e._id}
+                    onChange={(p) => changePrintQty(e._id, p.target.value)}
                   ></input>
                 </div>
               </div>

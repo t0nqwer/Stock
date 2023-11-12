@@ -6,13 +6,14 @@ const useProduct = create((set) => ({
   products: [],
   pagelimit: 0,
   search: "",
-  fetchProduct: async (search) => {
-    const response = await axios.get(
-      `${URL}listproducts?search=${search ? search : ""}`
+  fetchProduct: async (barcode, price, name, code, isStock) => {
+    const { data } = await axios.get(
+      `${URL}stock?isStock=${isStock}&barcode=${barcode}&price=${price}&name=${name}&code=${code}`
     );
+    console.log(data);
     set((state) => ({
       ...state,
-      products: response.data,
+      products: data,
     }));
   },
 }));
