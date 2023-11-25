@@ -203,6 +203,12 @@ const useExportStore = create((set, get) => ({
       }
     } catch (error) {
       notify(error.response.data.message);
+      notify("เกิดข้อผิดพลาด");
+
+      set((state) => ({
+        ...state,
+        Loading: false,
+      }));
     }
   },
   transferProduct: async (barcode) => {
@@ -258,6 +264,10 @@ const useExportStore = create((set, get) => ({
       }
     } catch (error) {
       notify(error.response.data.message);
+      set((state) => ({
+        ...state,
+        Loading: false,
+      }));
     }
   },
 }));
