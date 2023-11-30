@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script src="./JsBarcode.all.min.js"></script>
+  </head>
+  <style>
+    @page {
+      size: 36mm 29mm;
+      margin: 0;
+    }
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      margin: 0;
+      padding: 0;
+      background: rgb(204, 204, 204);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .page {
+      display: inline-block;
+      position: relative;
+      height: 29mm;
+      width: 36mm;
+      font-size: 10pt;
+      margin: 2em auto;
+      padding: calc(var(--bleeding) + var(--margin));
+      box-shadow: 0 0 0.5cm rgba(0, 0, 0, 0.5);
+      background: white;
+    }
+
+    @media screen {
+      .page::after {
+        position: absolute;
+        content: "";
+        width: calc(100% - var(--bleeding) * 2);
+        height: calc(100% - var(--bleeding) * 2);
+        margin: var(--bleeding);
+        top: 0;
+        left: 0;
+        pointer-events: none;
+        z-index: 9999;
+      }
+    }
+    @media print {
+      .page {
+        margin: 0;
+        overflow: hidden;
+      }
+    }
+    .no-print {
+      display: none !important;
+    }
+    .print {
+      display: block !important;
+    }
+  </style>
+  <body></body>
+  <script src="./JsBarcode.all.min.js"></script>
+  <script>
+    fetch("./data.json")
+      .then((response) => response.json())
+      .then((json) => {
+        json.selectBarcode.map((e) => {
+          const print = e.printqty;
+          let i;
+          for (i = 0; i < print; i++) {
+            if (e.design) {
+              const div = document.createElement("div");
+              div.classList.add("page");
+              div.innerHTML = `<div style="display: flex; justify-content: space-between; ">
+              <div >${e.design.toUpperCase()}-${e.size}</div>
+              <div>${e.price}</div>
+              </div>
+              <div style="font-size: 8pt;   ">${e.fabric}</div>
+              <img id="${e._id}${i}" xmlns="http://www.w3.org/2000/svg"
+              style="object-fit: contain;"  width="100%"></img>
+              <div style="font-size: 8pt; display: flex; justify-content: center;"><div>${e._id.toUpperCase()}</div></div>
+              </div>`;
+              document.body.appendChild(div);
+            }
+            if (!e.design)
+              document.body.innerHTML += `<div class="page">
+        <div style="display: flex; justify-content: space-between; line-height: 1em;   font-size: 9pt;">
+        <div >${e.name}</div>
+        <div>${e.price}</div>
+        </div>
+        <div style="font-size: 8pt;   ">${e.brand}</div>
+        <img id="${e._id}${i}" xmlns="http://www.w3.org/2000/svg"
+        style="object-fit: contain;"  width="100%"></img>
+        <div style="font-size: 8pt; display: flex; justify-content: center;"><div>${e._id.toUpperCase()}</div></div>
+        </div>`;
+          }
+        });
+        let images = document.getElementsByTagName("img");
+        for (let i = 0; i < images.length; i++) {
+          JsBarcode(`#${images[i].id}`, images[i].id, {
+            format: "code128",
+            width: 1,
+            height: 40,
+            displayValue: false,
+            margin: 1,
+            marginTop: 0,
+            marginBottom: 0,
+            marginLeft: 0,
+            marginRight: 0,
+            background: "#ffffff",
+          });
+        }
+      });
+  </script>
+</html>

@@ -2,6 +2,7 @@ const { app, BrowserWindow, ipcMain } = require("electron");
 const path = require("path");
 const io = require("socket.io-client");
 const axios = require("axios");
+const fs = require("fs");
 
 const isDev = !app.isPackaged;
 const RESOURCES_PATH = app.isPackaged
@@ -25,7 +26,6 @@ function createWindow() {
     },
   });
   win.loadFile("index.html");
-  // win.webContents.openDevTools();
   win.maximize();
 }
 if (isDev) {
@@ -45,4 +45,39 @@ app.on("activate", () => {
     createWindow();
     // win.webContents.openDevTools();
   }
+});
+
+ipcMain.on("print", (event, arg) => {
+  console.log("Print");
+
+  let win2 = new BrowserWindow({
+    useContentSize: true,
+    show: false,
+    webPreferences: {
+      nodeIntegration: true,
+    },
+  });
+  win2.once("ready-to-show", () => win2.show());
+
+  fs.writeFile(
+    getAssetPath("assets/data.json"),
+    JSON.stringify(arg),
+    function (err) {
+      win2.loadURL(getAssetPath("assets/Barcode.html"));
+      win2.webContents.on("did-finish-load", async () => {
+        console.log(arg.pageqty);
+        const options = {
+          silent: true,
+          deviceName: arg.PrinterName,
+          margins: {
+            marginType: "printableArea",
+          },
+          pageRanges: [{ from: 1 + "", to: arg.pageqty + "" }],
+        };
+        win2.webContents.print(options, () => {
+          win2 = null;
+        });
+      });
+    }
+  );
 });
