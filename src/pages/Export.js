@@ -7,6 +7,8 @@ import { useLocation } from "react-router-dom";
 const Export = () => {
   const location = useLocation();
   const id = location.pathname.split("/")[2];
+  const [confirmDelete, setConfirmDelete] = useState(true);
+
   const Navigate = useNavigate();
   const fetchStore = useExportStore((state) => state.fetchStore);
   const storeList = useExportStore((state) => state.storeList);
@@ -46,7 +48,6 @@ const Export = () => {
   }, [selectStore, storeList]);
   useEffect(() => {
     if (Success) {
-      console.log("success");
       setSuccess(false);
       Navigate("/Export");
     }
@@ -56,48 +57,48 @@ const Export = () => {
   }, [fetchStore]);
 
   return (
-    <div className="flex flex-col w-full h-full pb-10">
-      <div className="p-5 select-none bg-third rounded-3xl">
-        <Header title="ส่งสินค้า" />
-        <div className="w-full">
-          <div className="flex justify-between">
-            <div>
-              <label htmlFor="from">ส่งไปที่ :</label>
-              <select
-                id="from"
-                name="from"
-                className="p-2 ml-3 text-center rounded-md w-96"
-                onChange={(e) => setSelect(e.target.value)}
-              >
-                <option value=""></option>
-                {storeList.map((store) => (
-                  <option value={store.shopName}>{store.shopName}</option>
-                ))}
-              </select>
-            </div>
-            <div className="flex space-x-10">
-              <button
-                className="px-5 py-2 text-white rounded-lg hover:bg-light bg-highlight"
-                onClick={() => saveExport()}
-              >
-                บันทึก
-              </button>
-              <button
-                className="px-5 py-2 text-white rounded-lg hover:bg-light bg-highlight"
-                onClick={() => transferProduct()}
-              >
-                ส่งสินค้า
-              </button>
-            </div>
-          </div>
+    // <div className="flex flex-col w-full h-full pb-10">
+    //   <div className="p-5 select-none bg-third rounded-3xl">
+    //     <Header title="ส่งสินค้า" />
+    //     <div className="w-full">
+    //       <div className="flex justify-between">
+    //         <div>
+    //           <label htmlFor="from">ส่งไปที่ :</label>
+    //           <select
+    //             id="from"
+    //             name="from"
+    //             className="p-2 ml-3 text-center rounded-md w-96"
+    //             onChange={(e) => setSelect(e.target.value)}
+    //           >
+    //             <option value=""></option>
+    //             {storeList.map((store) => (
+    //               <option value={store.shopName}>{store.shopName}</option>
+    //             ))}
+    //           </select>
+    //         </div>
+    //         <div className="flex space-x-10">
+    //           <button
+    //             className="px-5 py-2 text-white rounded-lg hover:bg-light bg-highlight"
+    //             onClick={() => saveExport()}
+    //           >
+    //             บันทึก
+    //           </button>
+    //           <button
+    //             className="px-5 py-2 text-white rounded-lg hover:bg-light bg-highlight"
+    //             onClick={() => transferProduct(id)}
+    //           >
+    //             ส่งสินค้า
+    //           </button>
+    //         </div>
+    //       </div>
 
-          <ExportSearch />
-        </div>
-      </div>
-      <div className="h-full p-5 mt-5 overflow-y-scroll select-none bg-third rounded-3xl">
-        <ExportProductList />
-      </div>
-    </div>
+    //       <ExportSearch />
+    //     </div>
+    //   </div>
+    //   <div className="h-full p-5 mt-5 overflow-y-scroll select-none bg-third rounded-3xl">
+    //     <ExportProductList />
+    //   </div>
+    // </div>
   );
 };
 

@@ -13,4 +13,7 @@ contextBridge.exposeInMainWorld("electron", {
   close: () => {
     ipcRenderer.send("close");
   },
+  printTransfer: (data) => {
+    ipcRenderer.send("printTransfer", data);
+  },
 });

@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>A4 Invoice</title>
+    <style>
+      @page {
+        size: A4;
+        margin: 0;
+      }
+      body {
+        margin: 0;
+        font-family: Arial, sans-serif;
+        font-size: 12px;
+      }
+      .invoice {
+        width: 210mm;
+        height: 297mm;
+        padding: 10mm;
+        box-sizing: border-box;
+        background-color: #fff;
+        border: 1px solid #ccc;
+      }
+      .header {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+      .TopForm {
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        align-items: top;
+      }
+      .table-50 {
+        width: 50%;
+        vertical-align: top;
+      }
+      .table-70 {
+        width: 70%;
+        vertical-align: top;
+      }
+      .table-30 {
+        width: 30%;
+        vertical-align: top;
+      }
+      .table-50 td {
+        padding: 0px;
+        height: 20px;
+      }
+      .table-70 td {
+        padding: 0px;
+        height: 20px;
+      }
+      .table-30 td {
+        padding: 0px;
+        height: 20px;
+      }
+      .Product-table {
+        width: 100%;
+        margin-top: 10px;
+      }
+      .Product-table table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+      .Product-table th {
+        border: 2px solid #000;
+        padding: 5px;
+        text-align: center;
+      }
+      .Product-table td {
+        border: 1px solid #000;
+        padding: 5px;
+      }
+      .No {
+        width: 5%;
+        text-align: center;
+      }
+      .Product-Code {
+        width: 10%;
+        text-align: center;
+      }
+      .Barcode {
+        width: 15%;
+        text-align: center;
+      }
+      .Price {
+        width: 10%;
+        text-align: center;
+      }
+      .NameText {
+        padding-left: 10px;
+      }
+      .SummaryTable {
+        width: 100%;
+        margin-top: 0px;
+      }
+      .SummaryTable table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+      .SummaryTable th {
+        border: 2px solid #000;
+        padding: 5px;
+        text-align: center;
+      }
+      .SummaryTable td {
+        border: 1px solid #000;
+        padding: 5px;
+      }
+      .PriceSummary {
+        width: 20%;
+        text-align: center;
+      }
+      .PriceSummaryText {
+        width: 72%;
+        text-align: center;
+      }
+      .Sign {
+        width: 100%;
+        margin-top: 20px;
+        display: flex;
+      }
+      .signplace {
+        width: 100%;
+        text-align: center;
+      }
+
+      /* Add your invoice styling here */
+    </style>
+  </head>
+  <body>
+    <div class="invoice">
+      <!-- Add your invoice content here -->
+      <div class="header">
+        <h1>ใบส่งสินค้า</h1>
+      </div>
+      <div class="TopForm">
+        <table class="table-70">
+          <tr>
+            <td>สต๊อคต้นทาง</td>
+            <td id="from">นาย สมชาย ใจดี</td>
+          </tr>
+          <tr>
+            <td>ที่อยู่</td>
+            <td id="fromAddress">
+              123 หมู่ 1 ต. ทดสอบ อ. ทดสอบ จ. ทดสอบ 12345
+            </td>
+          </tr>
+          <tr>
+            <td>สต๊อคปลายทาง</td>
+            <td id="to">นาย สมชาย ใจดี</td>
+          </tr>
+          <tr>
+            <td>ที่อยู่</td>
+            <td id="toAddress">123 หมู่ 1 ต. ทดสอบ อ. ทดสอบ จ. ทดสอบ 12345</td>
+          </tr>
+        </table>
+        <table class="table-30">
+          <tr>
+            <td>เลขที่ใบส่งสินค้า</td>
+            <td id="invoiceNo">0001</td>
+          </tr>
+          <tr>
+            <td>วันที่</td>
+            <td id="date">01/01/2564</td>
+          </tr>
+          <tr>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td></td>
+            <td></td>
+          </tr>
+        </table>
+      </div>
+      <div class="Product-table">
+        <table>
+          <tr>
+            <th class="No">รายการที่</th>
+            <th class="Product-Code">รหัสสินค้า</th>
+            <th class="No">ไซส์สินค้า</th>
+            <th class="Barcode">Barcode</th>
+            <th>ชื่อสินค้า</th>
+            <th class="No">จำนวน</th>
+            <th class="Price">ราคาต่อหน่วย</th>
+            <th class="Price">ราคาต่อรวม</th>
+          </tr>
+          <tr id="1">
+            <td class="No">1</td>
+            <td class="Product-Code">0001</td>
+            <td class="No">S</td>
+            <td class="Barcode">1234567890123</td>
+            <td class="NameText">เสื้อยืด</td>
+            <td class="No">10</td>
+            <td class="Price">100</td>
+            <td class="Price">1,000</td>
+          </tr>
+          <tr id="2">
+            <td class="No">2</td>
+            <td class="Product-Code"></td>
+            <td class="No"></td>
+            <td class="Barcode"></td>
+            <td class="NameText"></td>
+            <td class="No"></td>
+            <td class="Price"></td>
+            <td class="Price"></td>
+          </tr>
+          <tr id="3">
+            <td class="No">3</td>
+            <td class="Product-Code"></td>
+            <td class="No"></td>
+            <td class="Barcode"></td>
+            <td class="NameText"></td>
+            <td class="No"></td>
+            <td class="Price"></td>
+            <td class="Price"></td>
+          </tr>
+          <tr id="4">
+            <td class="No">4</td>
+            <td class="Product-Code"></td>
+            <td class="No"></td>
+            <td class="Barcode"></td>
+            <td class="NameText"></td>
+            <td class="No"></td>
+            <td class="Price"></td>
+            <td class="Price"></td>
+          </tr>
+          <tr id="5">
+            <td class="No">5</td>
+            <td class="Product-Code"></td>
+            <td class="No"></td>
+            <td class="Barcode"></td>
+            <td class="NameText"></td>
+            <td class="No"></td>
+            <td class="Price"></td>
+            <td class="Price"></td>
+          </tr>
+          <tr id="6">
+            <td class="No">6</td>
+            <td class="Product-Code"></td>
+            <td class="No"></td>
+            <td class="Barcode"></td>
+            <td class="NameText"></td>
+            <td class="No"></td>
+            <td class="Price"></td>
+            <td class="Price"></td>
+          </tr>
+          <tr id="7">
+            <td class="No">7</td>
+            <td class="Product-Code"></td>
+            <td class="No"></td>
+            <td class="Barcode"></td>
+            <td class="NameText"></td>
+            <td class="No"></td>
+            <td class="Price"></td>
+            <td class="Price"></td>
+          </tr>
+          <tr id="8">
+            <td class="No">8</td>
+            <td class="Product-Code"></td>
+            <td class="No"></td>
+            <td class="Barcode"></td>
+            <td class="NameText"></td>
+            <td class="No"></td>
+            <td class="Price"></td>
+            <td class="Price"></td>
+          </tr>
+          <tr id="9">
+            <td class="No">9</td>
+            <td class="Product-Code"></td>
+            <td class="No"></td>
+            <td class="Barcode"></td>
+            <td class="NameText"></td>
+            <td class="No"></td>
+            <td class="Price"></td>
+            <td class="Price"></td>
+          </tr>
+          <tr id="10">
+            <td class="No">10</td>
+            <td class="Product-Code"></td>
+            <td class="No"></td>
+            <td class="Barcode"></td>
+            <td class="NameText"></td>
+            <td class="No"></td>
+            <td class="Price"></td>
+            <td class="Price"></td>
+          </tr>
+          <tr id="11">
+            <td class="No">11</td>
+            <td class="Product-Code"></td>
+            <td class="No"></td>
+            <td class="Barcode"></td>
+            <td class="NameText"></td>
+            <td class="No"></td>
+            <td class="Price"></td>
+            <td class="Price"></td>
+          </tr>
+          <tr id="12">
+            <td class="No">12</td>
+            <td class="Product-Code"></td>
+            <td class="No"></td>
+            <td class="Barcode"></td>
+            <td class="NameText"></td>
+            <td class="No"></td>
+            <td class="Price"></td>
+            <td class="Price"></td>
+          </tr>
+          <tr id="13">
+            <td class="No">13</td>
+            <td class="Product-Code"></td>
+            <td class="No"></td>
+            <td class="Barcode"></td>
+            <td class="NameText"></td>
+            <td class="No"></td>
+            <td class="Price"></td>
+            <td class="Price"></td>
+          </tr>
+          <tr id="14">
+            <td class="No">14</td>
+            <td class="Product-Code"></td>
+            <td class="No"></td>
+            <td class="Barcode"></td>
+            <td class="NameText"></td>
+            <td class="No"></td>
+            <td class="Price"></td>
+            <td class="Price"></td>
+          </tr>
+          <tr id="15">
+            <td class="No">15</td>
+            <td class="Product-Code"></td>
+            <td class="No"></td>
+            <td class="Barcode"></td>
+            <td class="NameText"></td>
+            <td class="No"></td>
+            <td class="Price"></td>
+            <td class="Price"></td>
+          </tr>
+          <tr id="16">
+            <td class="No">16</td>
+            <td class="Product-Code"></td>
+            <td class="No"></td>
+            <td class="Barcode"></td>
+            <td class="NameText"></td>
+            <td class="No"></td>
+            <td class="Price"></td>
+            <td class="Price"></td>
+          </tr>
+          <tr id="17">
+            <td class="No">17</td>
+            <td class="Product-Code"></td>
+            <td class="No"></td>
+            <td class="Barcode"></td>
+            <td class="NameText"></td>
+            <td class="No"></td>
+            <td class="Price"></td>
+            <td class="Price"></td>
+          </tr>
+          <tr id="18">
+            <td class="No">18</td>
+            <td class="Product-Code"></td>
+            <td class="No"></td>
+            <td class="Barcode"></td>
+            <td class="NameText"></td>
+            <td class="No"></td>
+            <td class="Price"></td>
+            <td class="Price"></td>
+          </tr>
+          <tr id="19">
+            <td class="No">19</td>
+            <td class="Product-Code"></td>
+            <td class="No"></td>
+            <td class="Barcode"></td>
+            <td class="NameText"></td>
+            <td class="No"></td>
+            <td class="Price"></td>
+            <td class="Price"></td>
+          </tr>
+          <tr id="20">
+            <td class="No">20</td>
+            <td class="Product-Code"></td>
+            <td class="No"></td>
+            <td class="Barcode"></td>
+            <td class="NameText"></td>
+            <td class="No"></td>
+            <td class="Price"></td>
+            <td class="Price"></td>
+          </tr>
+          <tr id="21">
+            <td class="No">21</td>
+            <td class="Product-Code"></td>
+            <td class="No"></td>
+            <td class="Barcode"></td>
+            <td class="NameText"></td>
+            <td class="No"></td>
+            <td class="Price"></td>
+            <td class="Price"></td>
+          </tr>
+          <tr id="22">
+            <td class="No">22</td>
+            <td class="Product-Code"></td>
+            <td class="No"></td>
+            <td class="Barcode"></td>
+            <td class="NameText"></td>
+            <td class="No"></td>
+            <td class="Price"></td>
+            <td class="Price"></td>
+          </tr>
+          <tr id="23">
+            <td class="No">23</td>
+            <td class="Product-Code"></td>
+            <td class="No"></td>
+            <td class="Barcode"></td>
+            <td class="NameText"></td>
+            <td class="No"></td>
+            <td class="Price"></td>
+            <td class="Price"></td>
+          </tr>
+          <tr id="24">
+            <td class="No">24</td>
+            <td class="Product-Code"></td>
+            <td class="No"></td>
+            <td class="Barcode"></td>
+            <td class="NameText"></td>
+            <td class="No"></td>
+            <td class="Price"></td>
+            <td class="Price"></td>
+          </tr>
+          <tr id="25">
+            <td class="No">25</td>
+            <td class="Product-Code"></td>
+            <td class="No"></td>
+            <td class="Barcode"></td>
+            <td class="NameText"></td>
+            <td class="No"></td>
+            <td class="Price"></td>
+            <td class="Price"></td>
+          </tr>
+          <tr>
+            <th colspan="5"></th>
+            <th class="No" id="QtyTotal">1</th>
+            <th colspan="2" id="PriceTotal">2</th>
+          </tr>
+        </table>
+      </div>
+      <div class="Sign">
+        <div class="signplace">
+          <p>........................................</p>
+          <p>........../........../..........</p>
+          <p>ผู้ส่งสินค้า</p>
+        </div>
+        <div class="signplace">
+          <p>........................................</p>
+          <p>........../........../..........</p>
+          <p>ผู้รับสินค้า</p>
+        </div>
+      </div>
+    </div>
+  </body>
+  <script>
+    fetch("./TransferData.json")
+      .then((response) => {
+        return response.json();
+      })
+      .then((data) => {
+        console.log(data);
+        console.log(data.Date);
+        document.getElementById("invoiceNo").innerHTML = data.transferId;
+        document.getElementById("date").innerHTML = data.Date;
+        document.getElementById("fromAddress").innerHTML = data.fromAddress;
+        document.getElementById("toAddress").innerHTML = data.toAddress;
+        document.getElementById("from").innerHTML = data.from;
+        document.getElementById("to").innerHTML = data.to;
+        document.getElementById("QtyTotal").innerHTML = data.QtyTotal;
+        document.getElementById("PriceTotal").innerHTML = data.PriceTotal;
+        data.product.map((item) => {
+          console.log(item);
+          document.getElementById(item.no).children[1].innerHTML = item.code;
+          document.getElementById(item.no).children[2].innerHTML = item.size;
+          document.getElementById(item.no).children[3].innerHTML = item.barcode;
+          document.getElementById(item.no).children[4].innerHTML = item.name;
+          document.getElementById(item.no).children[5].innerHTML = item.qty;
+          document.getElementById(item.no).children[6].innerHTML = item.price;
+          document.getElementById(item.no).children[7].innerHTML = item.total;
+        });
+      });
+  </script>
+</html>

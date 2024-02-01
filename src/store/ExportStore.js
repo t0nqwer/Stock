@@ -211,7 +211,8 @@ const useExportStore = create((set, get) => ({
       }));
     }
   },
-  transferProduct: async (barcode) => {
+  transferProduct: async (id) => {
+    console.log(id);
     try {
       const state = get();
       if (state.selectStore === "") return notify("โปรดเลือกร้าน");

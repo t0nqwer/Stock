@@ -5,7 +5,12 @@ import { Link } from "react-router-dom";
 import useExportListStore from "../store/ExportListStore";
 import { notify } from "../contexts/Notification";
 import useExportContext from "../store/ExportContaxt";
+import axios from "axios";
+import { URL } from "../contexts/Url";
 const ExportList = () => {
+  const [confirmDelete, setConfirmDelete] = useState(false);
+  const [deleteId, setDeleteId] = useState("");
+
   const list = useExportListStore((state) => state.list);
   const fetchList = useExportListStore((state) => state.fetchList);
   const deleteExport = useExportListStore((state) => state.deleteExport);
@@ -20,8 +25,44 @@ const ExportList = () => {
     console.log(list.reverse());
   }, [list]);
 
+  const printInvoid = async (id) => {
+    try {
+      const { data } = await axios.get(`${URL}stock/PrintExport/${id}`);
+      electron.printTransfer(data);
+    } catch (error) {}
+  };
+
   return (
     <>
+      {confirmDelete && (
+        <div className="fixed z-50 flex items-center justify-center w-full h-full select-none backdrop-blur-sm">
+          <div className="flex flex-col items-center justify-center w-1/3 bg-white h-1/3 rounded-2xl">
+            <p className="text-xl font-semibold">ยืนยันการลบ</p>
+            <p className="text-center">คุณต้องการลบรายการส่งสินค้าหรือไม่</p>
+            <div className="flex items-center justify-center w-full mt-5 space-x-3">
+              <button
+                className="px-3 py-1 text-white bg-red-600 rounded-lg hover:bg-light"
+                onClick={() => {
+                  setDeleteId("");
+                  setConfirmDelete(false);
+                }}
+              >
+                ยกเลิก
+              </button>
+              <button
+                className="px-3 py-1 text-white rounded-lg bg-highlight hover:bg-light"
+                onClick={() => {
+                  deleteExport(deleteId);
+                  setDeleteId("");
+                  setConfirmDelete(false);
+                }}
+              >
+                ยืนยัน
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
       <div className="p-5 select-none bg-third rounded-3xl">
         <Header title="ส่งสินค้า" />
         <div className="flex items-center justify-between">
@@ -70,7 +111,7 @@ const ExportList = () => {
                       ? "กำลังส่ง"
                       : item.status === "cancel"
                       ? "ยกเลิก"
-                      : "bg-green-500"}
+                      : "ส่งสำเร็จ"}
                   </p>
                 </div>
                 <p className="flex items-center text-sm ">{item._id}</p>
@@ -105,15 +146,19 @@ const ExportList = () => {
                     <>
                       <button
                         className="px-3 py-1 text-white bg-red-600 rounded-lg hover:bg-light"
-                        onClick={() => deleteExport(item._id)}
+                        // onClick={() => deleteExport(item._id)}
+                        onClick={() => {
+                          setConfirmDelete(true);
+                          setDeleteId(item._id);
+                        }}
                       >
                         ลบ
                       </button>
                       <button
                         className="px-3 py-1 text-white rounded-lg bg-highlight hover:bg-light"
-                        onClick={() => notify("ยังไม่สามารถใช้งานได้")}
+                        onClick={() => printInvoid(item._id)}
                       >
-                        ดูข้อมูล
+                        พิมพ์
                       </button>
                     </>
                   )}

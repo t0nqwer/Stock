@@ -49,7 +49,6 @@ app.on("activate", () => {
 
 ipcMain.on("print", (event, arg) => {
   console.log("Print");
-
   let win2 = new BrowserWindow({
     useContentSize: true,
     show: false,
@@ -58,7 +57,6 @@ ipcMain.on("print", (event, arg) => {
     },
   });
   win2.once("ready-to-show", () => win2.show());
-
   fs.writeFile(
     getAssetPath("assets/data.json"),
     JSON.stringify(arg),
@@ -76,6 +74,44 @@ ipcMain.on("print", (event, arg) => {
         };
         win2.webContents.print(options, () => {
           win2 = null;
+        });
+      });
+    }
+  );
+});
+
+ipcMain.on("printTransfer", async (event, arg) => {
+  console.log("Print");
+
+  let win3 = new BrowserWindow({
+    useContentSize: true,
+    show: false,
+    webPreferences: {
+      nodeIntegration: true,
+    },
+  });
+  win3.once("ready-to-show", () => win3.hide());
+
+  console.log(JSON.stringify(arg).Printer);
+
+  fs.writeFile(
+    getAssetPath("assets/TransferData.json"),
+    JSON.stringify(arg),
+    function (err) {
+      win3.loadURL(getAssetPath("assets/Transfer.html"));
+      win3.webContents.on("did-finish-load", async () => {
+        console.log(arg.pageqty);
+        const options = {
+          silent: true,
+          deviceName: arg.Printer,
+          margins: {
+            marginType: "printableArea",
+          },
+          pageRanges: [{ from: 1 + "", to: arg.pageqty + "" }],
+          landscape: false,
+        };
+        win3.webContents.print(options, () => {
+          win3 = null;
         });
       });
     }

@@ -6,8 +6,8 @@ import { useNavigate, useLocation } from "react-router-dom";
 const AddExport = () => {
   const Navigate = useNavigate();
   const location = useLocation();
+  const [confirmDelete, setConfirmDelete] = useState(true);
   const id = location.pathname.split("/")[2];
-  console.log(id);
   const [search, setSearch] = useState({
     barcode: "",
     name: "",
@@ -72,6 +72,7 @@ const AddExport = () => {
           <div className="w-12 h-12 border-8 border-solid rounded-full animate-spin border-highlight border-t-transparent"></div>
         </div>
       )}
+
       <div className="p-3 rounded-lg select-none bg-third">
         <Header title="ส่งสินค้า" />
         <div className="w-full">
@@ -108,7 +109,7 @@ const AddExport = () => {
               </button>
               <button
                 className="px-5 py-2 text-white rounded-lg hover:bg-light bg-highlight"
-                onClick={() => SentExport(selectStore)}
+                onClick={() => SentExport(selectStore, id)}
               >
                 ส่งสินค้า
               </button>

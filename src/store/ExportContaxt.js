@@ -184,7 +184,7 @@ const useExportContext = create((set, get) => ({
       res: "บันทึกสินค้าสำเร็จ",
     }));
   },
-  SentExport: async (store) => {
+  SentExport: async (store, id) => {
     const selectData = get().selectData;
     if (!store) return notify("โปรดเลือกสาขาที่ต้องการส่งสินค้า");
     if (selectData.length === 0) return notify("โปรดเลือกสินค้า");
@@ -192,6 +192,7 @@ const useExportContext = create((set, get) => ({
     try {
       const { data } = await axios.post(`${URL}stock/export`, {
         store,
+        id,
         products: selectData,
       });
       notify(data.message);
