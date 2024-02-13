@@ -31,8 +31,11 @@
       "preload.js",
       "./server/server.js"
     ],
+    "extraFiles": [
+      "JsBarcode.all.min.js",
+      "assets/**/*"
+    ],
     "extraResources": [
-      "server/**/*",
       "JsBarcode.all.min.js",
       "assets/**/*"
     ],

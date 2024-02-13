@@ -90,9 +90,9 @@ ipcMain.on("printTransfer", async (event, arg) => {
       nodeIntegration: true,
     },
   });
-  win3.once("ready-to-show", () => win3.hide());
+  win3.once("ready-to-show", () => win3.show());
 
-  console.log(JSON.stringify(arg).Printer);
+  // console.log(JSON.stringify(arg).Printer);
 
   fs.writeFile(
     getAssetPath("assets/TransferData.json"),
@@ -100,9 +100,8 @@ ipcMain.on("printTransfer", async (event, arg) => {
     function (err) {
       win3.loadURL(getAssetPath("assets/Transfer.html"));
       win3.webContents.on("did-finish-load", async () => {
-        console.log(arg.pageqty);
         const options = {
-          silent: true,
+          // silent: true,
           deviceName: arg.Printer,
           margins: {
             marginType: "printableArea",
@@ -111,7 +110,7 @@ ipcMain.on("printTransfer", async (event, arg) => {
           landscape: false,
         };
         win3.webContents.print(options, () => {
-          win3 = null;
+          // win3 = null;
         });
       });
     }
